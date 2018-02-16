@@ -18,6 +18,6 @@ public class DestroyOnCollide : MonoBehaviour
         Transform t = Instantiate(_particleSystem).transform;
         t.position = transform.position;
         SendMessageUpwards("Destroy");
-        Destroy(_parent);
+        _parent.gameObject.SetActive(false);
     }
 }
