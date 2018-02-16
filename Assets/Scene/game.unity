@@ -113,6 +113,34 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &6323098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 6323099}
+  m_Layer: 0
+  m_Name: Particle Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6323099
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 6323098}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &101533320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1830,7 +1858,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 642690928
+  randomSeed: -553887676
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5721,9 +5749,7 @@ MonoBehaviour:
   _fireSpeed: 0.08
   _zoomMax: 1
   _zoomMin: 7
-  _timeToZoomOut: 0.7
-  _zoomInSpeed: 0.05
-  _zoomOutSpeed: 0.02
+  _zoomModifier: 0.08
   _smoothTime: 0.5
   _maxSpeed: 2
 --- !u!50 &1893535429
@@ -5757,13 +5783,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2f526e24f3f3154bbcdd42dc524cffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletContainer: {fileID: 2098919339}
+  _particleContainer: {fileID: 6323098}
   _bullet: {fileID: 1127746512166500, guid: f72e354e14b317e4e956a3234aadfeac, type: 2}
+  _maxBullets: 50
+  _particle: {fileID: 198967679890951518, guid: cd47b92a2ab68de479be33ca54074540,
+    type: 2}
   _speed: 6
   _deviation: 5
   _rotationSpeed: 1000
   _fireOffset: 0.3
-  _particle: {fileID: 198967679890951518, guid: cd47b92a2ab68de479be33ca54074540,
-    type: 2}
 --- !u!58 &1893535431
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6258,6 +6287,34 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 100, y: 2}
   m_EdgeRadius: 0
+--- !u!1 &2098919339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2098919340}
+  m_Layer: 0
+  m_Name: Bullet Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2098919340
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2098919339}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2103930211
 GameObject:
   m_ObjectHideFlags: 0
