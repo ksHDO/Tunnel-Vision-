@@ -31,7 +31,8 @@ public class SpawnOnDeath : MonoBehaviour
     {
         _isExiting = true;
     }
-    void OnDestroy()
+    
+    void Destroy()
     {
         if (!_isExiting)
         {

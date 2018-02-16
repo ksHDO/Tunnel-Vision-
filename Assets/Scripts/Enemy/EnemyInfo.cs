@@ -25,8 +25,7 @@ public class EnemyInfo : MonoBehaviour
 	    if (HP < 0)
 	    {
 	        PlayerScore.AddScore(ScoreValue);
-
-	        
+            GlobalInfo.EnemyGenerator.EnemyKilled();
             // OnDeath.Invoke();
             SendMessage("Destroy");
             Destroy(gameObject);
