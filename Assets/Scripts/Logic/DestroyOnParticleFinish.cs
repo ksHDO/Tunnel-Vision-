@@ -16,7 +16,7 @@ public class DestroyOnParticleFinish : MonoBehaviour
 	void Update () {
 	    if (!_system.IsAlive())
 	    {
-	        Destroy(gameObject);
+            gameObject.SetActive(false);
 	    }
 	}
 }

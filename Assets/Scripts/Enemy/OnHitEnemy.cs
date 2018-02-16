@@ -33,7 +33,7 @@ public class OnHitEnemy : MonoBehaviour
             {
                 Instantiate(_particleSystem).transform.position = transform.position;
                 enemy.HP -= _bullet.Damage;
-                Destroy(transform.parent.gameObject);
+                transform.parent.gameObject.SetActive(false);
             }
         }
     }
