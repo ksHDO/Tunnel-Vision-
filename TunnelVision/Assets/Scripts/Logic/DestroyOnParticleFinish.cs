@@ -10,13 +10,15 @@ public class DestroyOnParticleFinish : MonoBehaviour
 	void Start ()
 	{
 	    _system = GetComponent<ParticleSystem>();
-	}
+        gameObject.transform.parent = GlobalInfo.ParticleContainer.transform;
+    }
 	
 	// Update is called once per frame
 	void Update () {
 	    if (!_system.IsAlive())
 	    {
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            Destroy(gameObject);
 	    }
 	}
 }

@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Collectable : MonoBehaviour
+public abstract class Collectable : MonoBehaviour
 {
-    public float PointValue;
+    [SerializeField] protected ParticleSystem _system;
+    [SerializeField] protected float _lifeTime = 5;
+    [SerializeField] protected float _fadeTime = 1;
 
-    [SerializeField] private ParticleSystem _system;
-    [SerializeField] private float _lifeTime = 5;
-    [SerializeField] private float _fadeTime = 1;
+    protected SpriteRenderer _renderer;
+    protected Transform _transform;
 
-    private SpriteRenderer _renderer;
-    private Transform _transform;
-    private PlayerScore _score;
 
-    void Start()
+    void Awake()
     {
         _transform = transform;
         _renderer = GetComponent<SpriteRenderer>();
-        StartCoroutine(Stay(_lifeTime));
     }
 
     IEnumerator Stay(float time)
@@ -43,21 +40,10 @@ public class Collectable : MonoBehaviour
             currentTime += Time.deltaTime;
             yield return null;
         }
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.CompareTag("Player"))
-        {
-            _score = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PlayerScore>();
-            if (_score)
-            {
-                _score.AddScore(PointValue);
-            }
-            if (_system && _transform)
-                Instantiate(_system).transform.position = _transform.position;
-            Destroy(gameObject);
-        }
     }
 }

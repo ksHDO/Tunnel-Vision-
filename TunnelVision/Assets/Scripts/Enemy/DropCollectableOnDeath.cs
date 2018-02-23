@@ -10,7 +10,9 @@ public class DropCollectableOnDeath : MonoBehaviour
     [SerializeField] private float _radius;
     [SerializeField] private float _maxRotationSpeed;
     [SerializeField] private float _minRotationSpeed;
-    [SerializeField] private Collectable _collectable;
+    [SerializeField] private Collectable_Points _collectable;
+    
+    // TODO:: Pool the collectables
 
     private EnemyInfo _info;
     private Transform _transform;
@@ -40,7 +42,8 @@ public class DropCollectableOnDeath : MonoBehaviour
         for (int i = 0; i < _collectableNumber; i++)
         {
             GameObject o = Instantiate(_collectable.gameObject);
-            o.GetComponent<Collectable>().PointValue = _collectableWorth;
+            o.transform.parent = GlobalInfo.ParticleContainer.transform;
+            o.GetComponent<Collectable_Points>().m_pointValue = _collectableWorth;
             o.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(_minRotationSpeed, _maxRotationSpeed);
             o.transform.position = (Vector2)_transform.position + Random.insideUnitCircle * _radius;
         }
