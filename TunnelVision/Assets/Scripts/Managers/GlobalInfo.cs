@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GlobalInfo : MonoBehaviour {
 
+    [SerializeField] private GameObject player;
+    public static GameObject Player { get; private set; }
+
 
     [SerializeField] private EnemyGenerator enemyGenerator;
     public static EnemyGenerator EnemyGenerator { get; private set; }
@@ -13,13 +16,13 @@ public class GlobalInfo : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         EnemyGenerator = enemyGenerator;
-
+        Player = player;
     }
 
 
     private void OnDestroy()
     {
-        EnemyGenerator = null;
+        //EnemyGenerator = null;
     }
 
     // Update is called once per frame
