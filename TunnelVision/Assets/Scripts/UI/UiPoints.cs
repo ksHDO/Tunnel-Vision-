@@ -22,6 +22,8 @@ public class UiPoints : MonoBehaviour
     private float _curHighScore;
     private float _velHighScore;
 
+    private bool m_scoreUpdated = false;
+
     private Transform _txtScoreTransform;
     private Transform _txtHighScoreTransform;
     private Vector3 _initialScale;
@@ -49,11 +51,12 @@ public class UiPoints : MonoBehaviour
 	    _txtScoreTransform.localScale = _initialScale * (1 + (_velScore * _scaleDamp));
 	    int val = Mathf.RoundToInt(_curScore);
         _txtScore.text = val + " points";
-	    if (val == (int) _score.Score)
+        
+	    if (!m_scoreUpdated && val == (int) _score.Score)
 	    {
 
             _onScoreFinishUpdate.Invoke();
-
+	        m_scoreUpdated = true;
 	    }
 
 	    if (_txtHighScore)

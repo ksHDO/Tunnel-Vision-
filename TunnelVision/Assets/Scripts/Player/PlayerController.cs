@@ -5,6 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Turret))]
+[RequireComponent(typeof(PlayerHealth))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _movementSpeed = 10;
