@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Collectable : MonoBehaviour
+public class Collectable : MonoBehaviour
 {
     [SerializeField] protected ParticleSystem _system;
     [SerializeField] protected float _lifeTime = 5;
@@ -43,7 +43,7 @@ public abstract class Collectable : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-    }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //}
 }

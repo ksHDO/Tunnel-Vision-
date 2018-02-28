@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Collectable_Points : Collectable {
 
-    [SerializeField] public float m_pointValue { get; set; }
+    [SerializeField] public float m_pointValue;
     protected PlayerScore _score;
 
     private void OnTriggerEnter2D(Collider2D collision)

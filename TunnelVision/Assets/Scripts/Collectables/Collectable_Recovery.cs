@@ -11,7 +11,7 @@ public class Collectable_Recovery : Collectable {
     {
         if (collision.CompareTag("Player"))
         {
-            _health = GameObject.FindGameObjectWithTag("PlayerManager").GetComponent<PlayerHealth>();
+            _health = collision.GetComponent<PlayerHealth>();
             if (_health)
             {
                 _health.AddHp(m_recoverAmount);

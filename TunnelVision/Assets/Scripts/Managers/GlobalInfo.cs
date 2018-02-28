@@ -12,11 +12,15 @@ public class GlobalInfo : MonoBehaviour {
     [SerializeField] private GameObject m_particleContainer;
     [SerializeField] private GameObject m_bulletContainer;
     [SerializeField] private GameObject m_collectableContainer;
+    [SerializeField] private GameObject m_upperLeft;
+    [SerializeField] private GameObject m_lowerRight;
     public static EnemyGenerator EnemyGenerator { get; private set; }
     public static GameObject ParticleContainer { get; private set; }
     public static GameObject BulletContainer { get; private set; }
     public static GameObject CollectableContainer { get; private set; }
-    
+    public static GameObject UpperLeft { get; private set; }
+    public static GameObject LowerRight { get; private set; }
+
 
     // Use this for initialization
     void Awake () {
@@ -25,6 +29,8 @@ public class GlobalInfo : MonoBehaviour {
         ParticleContainer = m_particleContainer;
         BulletContainer = m_bulletContainer;
         CollectableContainer = m_collectableContainer;
+        UpperLeft = m_upperLeft;
+        LowerRight = m_lowerRight;
     }
 
 
