@@ -254,7 +254,7 @@ MonoBehaviour:
   _radius: 1
   _maxRotationSpeed: 3
   _minRotationSpeed: 300
-  _collectable: {fileID: 114144357825431408, guid: b85923c54d936e14985f290167b1902f,
+  _collectable: {fileID: 114628810121526118, guid: 1c42d39ab06fb8242968a83946f3e132,
     type: 2}
 --- !u!212 &212487109967913862
 SpriteRenderer:

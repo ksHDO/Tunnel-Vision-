@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50236871813586732}
   - component: {fileID: 114901079587273828}
   - component: {fileID: 58036681579754414}
-  - component: {fileID: 114144357825431408}
+  - component: {fileID: 114628810121526118}
   m_Layer: 0
   m_Name: Collectable_Points
   m_TagString: Untagged
@@ -79,7 +79,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.7
---- !u!114 &114144357825431408
+--- !u!114 &114628810121526118
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1351185228522906}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be22c43c960020141859cb8063e9d8bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 1592b90ad80d7cf4ba55bf4434d29a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _system: {fileID: 198231790742280296, guid: 1b4a2efb5a8c5d649b939ba580792042, type: 2}

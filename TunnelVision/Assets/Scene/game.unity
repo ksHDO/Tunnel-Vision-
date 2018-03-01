@@ -138,14 +138,65 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-<<<<<<< HEAD
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-=======
   m_Father: {fileID: 1455629887}
   m_RootOrder: 1
->>>>>>> Added an item manager and collectable prefabs. Items can now randomly spawn in the world. Updated GlobalInfo to contain the pooling and have more information about the world available. All enemy prefabs have been updated to have the correct type of collectables to drop upon death. Fixed an error where particle systems were destroyed on bullet death instead of deactivated. Known error: Something in the item spawning code throws some sort of null reference error, but the code still compiles and functions normally; however, items are unable to spawn over time within the game.
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &101484410
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4867451160029702, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 3.099278
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867451160029702, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -3.0148573
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867451160029702, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.06536553
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867451160029702, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867451160029702, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867451160029702, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867451160029702, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867451160029702, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1344526230857354, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+      propertyPath: m_Name
+      value: GlobalInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: 114118036394474858, guid: df29426d7b711b4478308bb72de9d1d3,
+        type: 2}
+      propertyPath: enemyGenerator
+      value: 
+      objectReference: {fileID: 894979365}
+    - target: {fileID: 114118036394474858, guid: df29426d7b711b4478308bb72de9d1d3,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1893535425}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: df29426d7b711b4478308bb72de9d1d3, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &101533320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,6 +1406,8 @@ MonoBehaviour:
   - {fileID: 114607684674336258, guid: f195d89fdb4d063418a9974765ee0c5f, type: 2}
   - {fileID: 114443168563005694, guid: c718b073858dece4faa34015f97bbaaa, type: 2}
   - {fileID: 114443168563005694, guid: 003ed83ae1f581644b15893c6801665c, type: 2}
+  - {fileID: 114616593868650326, guid: e56723784e77ad546a38781fc8605765, type: 2}
+  - {fileID: 114009522327343568, guid: 7e4571a21e0469d49bf771378868f0f4, type: 2}
   _startTimeToGenerate: 5
   generateRand: 0.1
   timeReduceSpeed: 0.1
@@ -5603,56 +5656,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1543248869}
---- !u!1 &1698144672
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1698144674}
-  - component: {fileID: 1698144673}
-  m_Layer: 0
-  m_Name: GlobalInfo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1698144673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1698144672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a18c2f14315672b42a7bcda23733390c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyGenerator: {fileID: 894979365}
-<<<<<<< HEAD
-  m_particleContainer: {fileID: 0}
-  m_bulletContainer: {fileID: 0}
-  m_collectableContainer: {fileID: 0}
-=======
-  m_particleContainer: {fileID: 6323098}
-  m_bulletContainer: {fileID: 2098919339}
-  m_collectableContainer: {fileID: 1047026979}
->>>>>>> Added an item manager and collectable prefabs. Items can now randomly spawn in the world. Updated GlobalInfo to contain the pooling and have more information about the world available. All enemy prefabs have been updated to have the correct type of collectables to drop upon death. Fixed an error where particle systems were destroyed on bullet death instead of deactivated. Known error: Something in the item spawning code throws some sort of null reference error, but the code still compiles and functions normally; however, items are unable to spawn over time within the game.
---- !u!4 &1698144674
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1698144672}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.099278, y: -3.0148573, z: -0.06536553}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1702449174
 GameObject:
   m_ObjectHideFlags: 0
@@ -6017,7 +6020,7 @@ Transform:
   - {fileID: 1388861819}
   - {fileID: 1450793282}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1893535428
 MonoBehaviour:
@@ -6036,7 +6039,7 @@ MonoBehaviour:
   _zoomMax: 1
   _zoomMin: 7
   _timeToZoomOut: 1
-  _zoomInSpeed: 0.01
+  _zoomInSpeed: 0.05
   _zoomOutSpeed: 0.01
   _smoothTime: 0.5
   _maxSpeed: 2
