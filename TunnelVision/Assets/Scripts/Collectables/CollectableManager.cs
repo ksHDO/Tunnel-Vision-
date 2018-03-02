@@ -27,7 +27,7 @@ public class CollectableManager : MonoBehaviour {
     private int m_collectableCount = 0;
 
     // Use this for initialization
-    void Awake () {
+    void Start () {
         // Verify the weights and collectable prefabs match up
 		if(m_collectablePrefabList.Length != m_collectableWeights.Length)
         {

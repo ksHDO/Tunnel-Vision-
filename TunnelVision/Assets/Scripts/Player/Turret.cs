@@ -6,8 +6,6 @@ public class Turret : MonoBehaviour
 {
     [Header("Configuration")]
     [Header("Projectile Information")]
-    [SerializeField] private GameObject _bulletContainer;
-    [SerializeField] private GameObject _particleContainer;
     [SerializeField] private GameObject _bullet;
     [SerializeField] private int _maxBullets = 10;
     [SerializeField] private ParticleSystem _particle;
@@ -44,8 +42,8 @@ public class Turret : MonoBehaviour
             // Set information
             _bullets[i].SetActive(false);
             _particles[i].gameObject.SetActive(false);
-            _bullets[i].transform.SetParent(_bulletContainer.transform);
-            _particles[i].transform.SetParent(_particleContainer.transform);
+            _bullets[i].transform.SetParent(GlobalInfo.BulletContainer.transform);
+            _particles[i].transform.SetParent(GlobalInfo.ParticleContainer.transform);
 	    }
 	    _bulletIndex = -1;
 	}
