@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 58036681579754414}
   - component: {fileID: 114484690814017056}
   m_Layer: 0
-  m_Name: Collectable_Health
+  m_Name: Collectable_Health_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
