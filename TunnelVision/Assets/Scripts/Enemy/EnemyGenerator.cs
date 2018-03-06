@@ -7,7 +7,7 @@ public class EnemyGenerator : MonoBehaviour
 
     [SerializeField] private float radius;
 
-    [SerializeField] private Rigidbody2D player;
+    [SerializeField] public Rigidbody2D[] players;
     [SerializeField] private PlayerScore score;
     [SerializeField] private List<EnemyBehavior> _enemies;
 
@@ -35,7 +35,7 @@ public class EnemyGenerator : MonoBehaviour
         GameObject enemy = Instantiate(_enemies[Random.Range(0, _enemies.Count)].gameObject);
 
         EnemyBehavior behavior = enemy.GetComponent<EnemyBehavior>();
-        behavior.Target = player;
+        behavior.Target = players[Random.Range(0, players.Length)]; // Randomly target a player in multiplayer
 
         EnemyInfo enemyInfo = enemy.GetComponent<EnemyInfo>();
         enemyInfo.PlayerScore = score;

@@ -12,8 +12,14 @@ EditorBuildSettings:
     path: Assets/Scene/menu.unity
     guid: 441d26398882ac74a9f1715ae9c7d653
   - enabled: 1
+    path: Assets/Scene/menu_multiplayer.unity
+    guid: 407e2f95e438bc940a2485d59017395b
+  - enabled: 1
     path: Assets/Scene/highscores.unity
     guid: 3f853a14e5dbe614da7fb983be97d653
   - enabled: 1
     path: Assets/Scene/game.unity
     guid: 95086038af796e8459b49d58251cb888
+  - enabled: 1
+    path: Assets/Scene/game_multiplayer.unity
+    guid: 2199c176b8cdd774bb3e2597edf9556d

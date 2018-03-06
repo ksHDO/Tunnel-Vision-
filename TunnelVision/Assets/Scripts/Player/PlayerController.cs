@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Constants;
+using GameSparks.RT;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +10,14 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerHealth))]
 public class PlayerController : MonoBehaviour
 {
+
     [SerializeField] private float _movementSpeed = 10;
     [SerializeField] private float _rotationSpeed = 5;
     [SerializeField] private float _fireSpeed = 1.0f;
 
+    [Header("Sprite")]
+    [SerializeField]
+    private Color _playerColor = Color.green;
     [Header("Camera")]
     [SerializeField] private float _zoomMax = 2f;
     [SerializeField] private float _zoomMin = 6f;
@@ -45,8 +51,11 @@ public class PlayerController : MonoBehaviour
 	    _zoomValue = _camera.orthographicSize;
 	    _soundbank = GetComponent<Soundbank>();
 
+        GetComponent<SpriteRenderer>().color = _playerColor;
+
 	    _isWaitingForZoomOut = false;
 	}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -55,8 +64,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        HandleMovement();
-        HandleMouse();
+        if (IsPlayer)
+        {
+            HandleMovement();
+            HandleMouse();
+        }
     }
 
     void HandleMovement()
@@ -69,6 +81,8 @@ public class PlayerController : MonoBehaviour
         Vector2 movement = new Vector2(horizontal, vertical) * _movementSpeed;
 
         _rigidbody.AddForce(movement);
+
+        
     }
 
     void HandleMouse()
@@ -127,4 +141,60 @@ public class PlayerController : MonoBehaviour
 
         _camera.orthographicSize = Mathf.SmoothDamp(_camera.orthographicSize, _zoomValue, ref _dtZoom, _smoothTime, _maxSpeed);
     }
+
+
+    // Multiplayer
+    // --------------
+    #region Multiplayer
+
+    [Header("Multiplayer")]
+    [SerializeField] private bool _isPlayer = true;
+    [SerializeField] private float _updateRate = 0.3f;
+    public bool IsPlayer
+    {
+        get { return _isPlayer; }
+        set { _isPlayer = value; }
+    }
+    private GameSparksManager _gameSparksManager;
+    public GameSparksManager GameSparks
+    {
+        get { return _gameSparksManager; }
+        set { _gameSparksManager = value; }
+    }
+
+    public void SetupMultiplayer(Transform spawnPos, bool isPlayer)
+    {
+        IsPlayer = isPlayer;
+        Transform selfTransform = transform;
+        transform.position = spawnPos.position;
+        if (isPlayer)
+        {
+            StartCoroutine(SendTransformUpdates());
+        }
+    }
+
+    IEnumerator SendTransformUpdates()
+    {
+        // To be safe
+        if (!_transform)
+            _transform = transform;
+
+        while (true)
+        {
+            using (RTData data = RTData.Get())
+            {
+                data.SetVector2(1, _transform.position);
+                data.SetFloat(2, _transform.eulerAngles.z);
+                data.SetVector2(3, _rigidbody.velocity);
+                _gameSparksManager.RTSession.SendData(
+                    MultiplayerCodes.PLAYER_POSITION.Int(),
+                    GameSparksRT.DeliveryIntent.UNRELIABLE_SEQUENCED,
+                    data
+                    );
+            }
+            yield return new WaitForSeconds(_updateRate);
+        }
+    }
+
+    #endregion
 }
