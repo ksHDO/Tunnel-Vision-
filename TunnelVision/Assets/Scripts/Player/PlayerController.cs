@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Turret))]
 [RequireComponent(typeof(PlayerHealth))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlayerController : MonoBehaviour
 {
 
@@ -15,9 +16,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _rotationSpeed = 5;
     [SerializeField] private float _fireSpeed = 1.0f;
 
-    [Header("Sprite")]
-    [SerializeField]
-    private Color _playerColor = Color.green;
     [Header("Camera")]
     [SerializeField] private float _zoomMax = 2f;
     [SerializeField] private float _zoomMin = 6f;
@@ -51,7 +49,7 @@ public class PlayerController : MonoBehaviour
 	    _zoomValue = _camera.orthographicSize;
 	    _soundbank = GetComponent<Soundbank>();
 
-        GetComponent<SpriteRenderer>().color = _playerColor;
+        _turret.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
 
 	    _isWaitingForZoomOut = false;
 	}
@@ -149,7 +147,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Multiplayer")]
     [SerializeField] private bool _isPlayer = true;
-    [SerializeField] private float _updateRate = 0.3f;
+    public float UpdateRate = 0.3f;
+    public int PeerID;
     public bool IsPlayer
     {
         get { return _isPlayer; }
@@ -178,6 +177,8 @@ public class PlayerController : MonoBehaviour
         // To be safe
         if (!_transform)
             _transform = transform;
+        if (!_rigidbody)
+            _rigidbody = GetComponent<Rigidbody2D>();
 
         while (true)
         {
@@ -192,7 +193,7 @@ public class PlayerController : MonoBehaviour
                     data
                     );
             }
-            yield return new WaitForSeconds(_updateRate);
+            yield return new WaitForSeconds(UpdateRate);
         }
     }
 

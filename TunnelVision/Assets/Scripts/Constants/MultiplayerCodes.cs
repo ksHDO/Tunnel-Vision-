@@ -7,9 +7,9 @@ namespace Assets.Scripts.Constants
 {
     public enum MultiplayerCodes
     {
-        START_GAME = 0,
-        PLAYER_POSITION = 1,
-        PLAYER_BULLETS = 2
+        START_GAME = 1,
+        PLAYER_POSITION = 2,
+        PLAYER_BULLETS = 3
     }
 
     public static class MultiplayerCodesExt

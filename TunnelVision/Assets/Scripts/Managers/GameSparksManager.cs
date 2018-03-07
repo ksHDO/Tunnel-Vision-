@@ -37,7 +37,7 @@ public class GameSparksManager : MonoBehaviour {
                 OnPlayerConnected,
                 OnPlayerDisconnected,
                 OnRTReady,
-                OnPacketReceived
+                OnPacketReceive
                 );
             m_gameSparksRTUnity.Connect();
         }
@@ -45,22 +45,26 @@ public class GameSparksManager : MonoBehaviour {
 
     private void OnPlayerConnected(int peer)
     {
-        OnPlayerConnect(peer);
+        if (OnPlayerConnect != null)
+            OnPlayerConnect(peer);
     }
 
     private void OnPacketReceive(RTPacket packet)
     {
-        OnPacketReceived(packet);
+        if (OnPacketReceived != null)
+            OnPacketReceived(packet);
     }
 
     private void OnRTReady(bool ready)
     {
-        OnPlayerReady(ready);
+        if (OnPlayerReady != null)
+            OnPlayerReady(ready);
     }
 
     private void OnPlayerDisconnected(int peer)
     {
-        OnPlayerDisconnect(peer);
+        if (OnPlayerDisconnect != null)
+            OnPlayerDisconnect(peer);
     }
 
     

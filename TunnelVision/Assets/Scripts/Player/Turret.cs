@@ -7,7 +7,16 @@ public class Turret : MonoBehaviour
     [Header("Configuration")]
     [Header("Projectile Information")]
     [SerializeField] private GameObject _bulletContainer;
+    public GameObject BulletContainer {
+        get { return _bulletContainer; }
+        set { _bulletContainer = value; }
+    }
     [SerializeField] private GameObject _particleContainer;
+    public GameObject ParticleContainer
+    {
+        get { return _particleContainer; }
+        set { _particleContainer = value; }
+    }
     [SerializeField] private GameObject _bullet;
     [SerializeField] private int _maxBullets = 10;
     [SerializeField] private ParticleSystem _particle;

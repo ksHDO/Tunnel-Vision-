@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 82556214300367330}
   - component: {fileID: 114658219768762942}
   m_Layer: 8
-  m_Name: Player
+  m_Name: Player 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,7 +372,6 @@ MonoBehaviour:
   _movementSpeed: 12
   _rotationSpeed: 17
   _fireSpeed: 0.08
-  _playerColor: {r: 0, g: 1, b: 0, a: 1}
   _zoomMax: 1
   _zoomMin: 7
   _timeToZoomOut: 1
@@ -3981,7 +3980,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 86a617e3d099a2741b2707cb342e6647, type: 3}
-  m_Color: {r: 0.28235295, g: 1, b: 0, a: 1}
+  m_Color: {r: 0, g: 0.15400028, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -4025,7 +4024,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 384e3e5ef75aee14dbaf015754d50471, type: 3}
-  m_Color: {r: 0.2827586, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.99721456, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

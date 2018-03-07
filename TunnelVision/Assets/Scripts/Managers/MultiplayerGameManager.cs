@@ -8,9 +8,15 @@ public class MultiplayerGameManager : MonoBehaviour {
 
     [SerializeField] private string GameSparksManagerObjectName;
     [SerializeField] private Transform SpawnPointParent;
+
+    [SerializeField] private GameObject m_bulletContainer;
+    [SerializeField] private GameObject m_particleContainer;
     
     [SerializeField] private GameObject[] PlayerPrefabs;
 
+    [Header("Update Rate")]
+    [SerializeField]
+    private float _playerUpdateRate = 0.01f;
 
     private GameSparksManager m_gameSparksManager;
     private Transform[] m_spawnPoints;
@@ -25,7 +31,7 @@ public class MultiplayerGameManager : MonoBehaviour {
             Debug.LogError("GameSparks not in scene!");
             return;
         }
-        
+
         m_gameSparksManager = gameSparksObject.GetComponent<GameSparksManager>();
         m_gameSparksManager.OnPacketReceived += PacketReceived;
         m_gameSparksManager.OnPlayerDisconnect += OnPlayerDisconnected;
@@ -66,9 +72,14 @@ public class MultiplayerGameManager : MonoBehaviour {
             );
             Transform playerTransfrom = player.transform;
             PlayerController playerController = player.GetComponent<PlayerController>();
+            Turret playerTurret = player.GetComponent<Turret>();
             enemyGenerator.players[i] = player.GetComponent<Rigidbody2D>();
-            player.name = players[i].PeerId.ToString();
+            player.name = "Player " + players[i].PeerId.ToString();
+            playerController.PeerID = players[i].PeerId;
+            playerController.UpdateRate = _playerUpdateRate;
             playerTransfrom.SetParent(thisTransform);
+            playerTurret.BulletContainer = m_bulletContainer;
+            playerTurret.ParticleContainer = m_particleContainer;
 
             bool isPlayer = players[i].PeerId == gameSparksSession.PeerId;
             playerController.GameSparks = m_gameSparksManager;
@@ -102,7 +113,7 @@ public class MultiplayerGameManager : MonoBehaviour {
     {
         for (int i = 0; i < m_players.Length; ++i)
         {
-            if (m_players[i].name == packet.Sender.ToString())
+            if (m_players[i].PeerID == packet.Sender)
             {
                 Transform playerTransform = m_players[i].transform;
                 Rigidbody2D playerRigidBody = m_players[i].GetComponent<Rigidbody2D>();
@@ -112,8 +123,8 @@ public class MultiplayerGameManager : MonoBehaviour {
 
                 // Referenced from PlayerController.SendTransformUpdates()
                 Vector2 newPos = (Vector2)packet.Data.GetVector2(1);
-                Vector2 newVel = (Vector2)packet.Data.GetVector2(2);
-                float newRot = (float)packet.Data.GetFloat(3);
+                float newRot = (float)packet.Data.GetFloat(2);
+                Vector2 newVel = (Vector2)packet.Data.GetVector2(3);
 
                 playerTransform.position = new Vector3(newPos.x, newPos.y, playerPosZ);
                 playerRigidBody.velocity = newVel;

@@ -11,6 +11,7 @@ public class UiMenuMultiplayer : MonoBehaviour {
 
     [SerializeField] private Text m_txtSearch;
     [SerializeField] private Button m_startButton;
+    [SerializeField] private Text[] m_playerTexts;
 
     [SerializeField] private string multiplayerScene;
 
@@ -28,7 +29,10 @@ public class UiMenuMultiplayer : MonoBehaviour {
         MatchNotFoundMessage.Listener += OnMatchNotFound;
         m_gameSparksManager.OnPlayerReady += OnMatchReady;
         m_gameSparksManager.OnPacketReceived += PacketReceived;
+        m_gameSparksManager.OnPlayerConnect += PlayerConnected;
+        m_gameSparksManager.OnPlayerDisconnect += PlayerDisconnect;
         FindMatch();
+
     }
 
     void FindMatch()
@@ -48,6 +52,10 @@ public class UiMenuMultiplayer : MonoBehaviour {
             });
         m_txtSearch.text = m_searchText;
         m_startButton.gameObject.SetActive(false);
+        foreach (var texts in m_playerTexts)
+        {
+            texts.gameObject.SetActive(false);
+        }
     }
 
     void OnMatchFound(MatchFoundMessage message)
@@ -68,30 +76,43 @@ public class UiMenuMultiplayer : MonoBehaviour {
 
     void OnMatchReady(bool ready)
     {
-        Debug.Log("Peer ID: " + m_gameSparksManager.RTSession.PeerId.Value);
         if (m_gameSparksManager.RTSession.PeerId.Value == 1)
         {
-            m_startButton.gameObject.SetActive(true);
+            if (m_startButton)
+                m_startButton.gameObject.SetActive(true);
         }
     }
 
     public void SendStartGame()
     {
-        using(RTData data = new RTData())
+        using(RTData data = RTData.Get())
         {
+            data.SetInt(1, 1);
+            Debug.Log("Start Game");
             m_gameSparksManager.RTSession.SendData(
                 MultiplayerCodes.START_GAME.Int(),
-                GameSparksRT.DeliveryIntent.RELIABLE,
+                GameSparksRT.DeliveryIntent.UNRELIABLE,
                 data
                 );
         }
         StartGame();
     }
 
+    void PlayerConnected(int peer)
+    {
+        m_playerTexts[peer + 1].gameObject.SetActive(true);
+    }
+
+    void PlayerDisconnect(int peer)
+    {
+        m_playerTexts[peer + 1].gameObject.SetActive(false);
+    }
+
     void PacketReceived(RTPacket packet)
     {
         if (packet.OpCode == MultiplayerCodes.START_GAME.Int())
         {
+            Debug.Log("Start Game");
             StartGame();
         }
     }

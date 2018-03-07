@@ -36,7 +36,8 @@ public class OnEnemyEnter : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             _onEnemyCollision.Invoke();
-            _screenShake.Shake(amount, duration);
+            if (_screenShake)
+                _screenShake.Shake(amount, duration);
             _hp.AddHp(-1);
             Instantiate(_particleSystem).transform.position = _transform.position;
         }
