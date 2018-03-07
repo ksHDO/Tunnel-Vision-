@@ -9,7 +9,9 @@ namespace Assets.Scripts.Constants
     {
         START_GAME = 1,
         PLAYER_POSITION = 2,
-        PLAYER_BULLETS = 3
+        PLAYER_BULLETS = 3,
+        ENEMY_SPAWN = 4,
+        ENEMY_POSITION
     }
 
     public static class MultiplayerCodesExt

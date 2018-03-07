@@ -112,7 +112,6 @@ public class UiMenuMultiplayer : MonoBehaviour {
     {
         if (packet.OpCode == MultiplayerCodes.START_GAME.Int())
         {
-            Debug.Log("Start Game");
             StartGame();
         }
     }

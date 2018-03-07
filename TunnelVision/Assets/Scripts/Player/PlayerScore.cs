@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 public class PlayerScore : MonoBehaviour
 {
-    [SerializeField] private string _leaderboardShortCode = "highscore";
     [SerializeField] private float _score;
     [SerializeField] private FloatEvent OnNewHighScore;
     public float Score { get { return _score; } private set { _score = value; } }

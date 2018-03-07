@@ -1396,7 +1396,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 20
-  player: {fileID: 1893535429}
+  players:
+  - {fileID: 1893535429}
   score: {fileID: 101533321}
   _enemies:
   - {fileID: 114549542126219796, guid: 703039b9b332e3a4b98aef2d96ee45ea, type: 2}
@@ -6043,6 +6044,9 @@ MonoBehaviour:
   _zoomOutSpeed: 0.01
   _smoothTime: 0.5
   _maxSpeed: 2
+  _isPlayer: 1
+  UpdateRate: 0.3
+  PeerID: 0
 --- !u!50 &1893535429
 Rigidbody2D:
   serializedVersion: 4

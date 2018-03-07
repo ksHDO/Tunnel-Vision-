@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using GameSparks.RT;
+using sys = System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Constants;
 
 public class EnemyGenerator : MonoBehaviour
 {
@@ -10,7 +13,7 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] public Rigidbody2D[] players;
     [SerializeField] private PlayerScore score;
     [SerializeField] private List<EnemyBehavior> _enemies;
-
+    public List<EnemyBehavior> Enemies { get { return _enemies; } set { _enemies = value; } }
     [SerializeField] private float _startTimeToGenerate;
     [SerializeField] private float generateRand;
     [SerializeField] private float timeReduceSpeed;
@@ -21,6 +24,7 @@ public class EnemyGenerator : MonoBehaviour
     private float currentTime;
 
     public bool EnableGeneration = true;
+    private bool m_isHost = false;
 
 	// Use this for initialization
 	void Start ()
@@ -32,16 +36,33 @@ public class EnemyGenerator : MonoBehaviour
 	
     void GenerateEnemy()
     {
-        GameObject enemy = Instantiate(_enemies[Random.Range(0, _enemies.Count)].gameObject);
+        int enemyId = Random.Range(0, _enemies.Count);
+        int target = Random.Range(0, players.Length);
+
+        Vector2 pos = Random.insideUnitCircle.normalized * radius;
+
+        EnemyBehavior behavior = GenerateEnemy(enemyId, target, pos, 0, Vector2.zero);
+
+        if (m_isHost) MultiplayerSpawnEnemy(enemyId, behavior, target);
+    }
+
+    public EnemyBehavior GenerateEnemy(int id, int target, Vector2 position, float rotation, Vector2 velocity)
+    {
+        GameObject enemy = Instantiate(_enemies[id].gameObject);
 
         EnemyBehavior behavior = enemy.GetComponent<EnemyBehavior>();
-        behavior.Target = players[Random.Range(0, players.Length)]; // Randomly target a player in multiplayer
+        behavior.Target = players[target];
 
         EnemyInfo enemyInfo = enemy.GetComponent<EnemyInfo>();
         enemyInfo.PlayerScore = score;
 
-        Vector2 pos = Random.insideUnitCircle.normalized * radius;
-        enemy.transform.position = pos;
+        enemy.transform.position = position;
+        Quaternion rot = enemy.transform.rotation;
+        Vector3 euler = rot.eulerAngles;
+        euler.z = rotation;
+
+        enemy.GetComponent<Rigidbody2D>().velocity = velocity;
+        return behavior;
     }
 
     void DoSpawnLogic()
@@ -87,4 +108,84 @@ public class EnemyGenerator : MonoBehaviour
         Gizmos.color = new Color(150, 150, 150);
         Gizmos.DrawWireSphere(transform.position, radius);
     }
+
+    #region Multiplayer
+    private GameSparksManager gameSparksManager;
+    public GameSparksManager GameSparksManager
+    {
+        get { return gameSparksManager; }
+        set { gameSparksManager = value; }
+    }
+    public void SetupMultiplayer(bool isHost)
+    {
+        EnableGeneration = isHost;
+        m_isHost = isHost;
+        //if (isHost)
+        //    StartCoroutine(UpdateEnemies());
+    }
+
+    private void MultiplayerSpawnEnemy(int id, EnemyBehavior behavior, int target)
+    {
+        Transform enemyTransform = behavior.transform;
+        Rigidbody2D rigidbody = behavior.GetComponent<Rigidbody2D>();
+        using (RTData data = RTData.Get())
+        {
+            data.SetInt(1, id);
+            data.SetInt(2, target);
+            data.SetVector2(3, enemyTransform.position);
+            data.SetFloat(4, enemyTransform.rotation.eulerAngles.z);
+            data.SetVector2(5, rigidbody.velocity);
+            gameSparksManager.RTSession.SendData(
+                MultiplayerCodes.ENEMY_SPAWN.Int(),
+                GameSparksRT.DeliveryIntent.RELIABLE,
+                data
+                );
+        }
+    }
+
+    private IEnumerator UpdateEnemies()
+    {
+        int enemyTypeCount = _enemies.Count;
+        while (true)
+        {
+
+
+            EnemyBehavior[] allEnemies = FindObjectsOfType<EnemyBehavior>();
+            using (RTData data = RTData.Get())
+            {
+                int length = allEnemies.Length;
+                data.SetInt(1, length);
+                for (int i = 0; i < length; ++i)
+                {
+                    EnemyBehavior enemy = allEnemies[i];
+                    Transform enemyTransform = enemy.transform;
+                    Rigidbody2D rigidbody = enemy.GetComponent<Rigidbody2D>();
+
+                    Vector2 position = enemyTransform.position;
+                    float rotation = enemyTransform.rotation.eulerAngles.z;
+                    Vector2 velocity = rigidbody.velocity;
+
+                    int enemyType = -1;
+                    for (int j = 0; j < _enemies.Count; ++j)
+                    {
+                        sys.Type type = _enemies[j].GetType();
+                        if (enemy.GetType().Equals(type))
+                        {
+                            enemyType = j;
+                            break;
+                        }
+                    }
+                    uint index = (uint)(i * 4);
+                    data.SetInt(index + 1, enemyType);
+                    data.SetVector2(index + 2, position);
+                    data.SetFloat(index + 3, rotation);
+                    data.SetVector2(index + 4, velocity);
+
+                }
+            }
+            yield return null;
+        }
+    }
+
+    #endregion
 }

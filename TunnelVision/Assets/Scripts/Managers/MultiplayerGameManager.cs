@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Constants;
+using System;
+using System.Linq;
 
 public class MultiplayerGameManager : MonoBehaviour {
 
@@ -13,15 +15,18 @@ public class MultiplayerGameManager : MonoBehaviour {
     [SerializeField] private GameObject m_particleContainer;
     
     [SerializeField] private GameObject[] PlayerPrefabs;
+    [SerializeField] private EnemyGenerator m_enemyGenerator;
 
     [Header("Update Rate")]
     [SerializeField]
     private float _playerUpdateRate = 0.01f;
+    [SerializeField] private float _enemiesPosUpdateRate = 0.1f;
 
     private GameSparksManager m_gameSparksManager;
     private Transform[] m_spawnPoints;
 
     private PlayerController[] m_players;
+    private Turret[] m_turrets;
 
 	// Use this for initialization
 	void Start () {
@@ -51,6 +56,7 @@ public class MultiplayerGameManager : MonoBehaviour {
         enemyGenerator.players = new Rigidbody2D[count];
 
         m_players = new PlayerController[count];
+        m_turrets = new Turret[count];
 
         if (PlayerPrefabs.Length < count)
         {
@@ -62,6 +68,7 @@ public class MultiplayerGameManager : MonoBehaviour {
             Debug.LogError("Spawn points less than connected players!");
             return;
         }
+        players.Sort((p, p2) => (p.PeerId.CompareTo(p2.PeerId)));
 
         for (int i = 0; i < count; ++i)
         {
@@ -72,14 +79,15 @@ public class MultiplayerGameManager : MonoBehaviour {
             );
             Transform playerTransfrom = player.transform;
             PlayerController playerController = player.GetComponent<PlayerController>();
-            Turret playerTurret = player.GetComponent<Turret>();
+            m_turrets[i] = player.GetComponent<Turret>();
             enemyGenerator.players[i] = player.GetComponent<Rigidbody2D>();
             player.name = "Player " + players[i].PeerId.ToString();
             playerController.PeerID = players[i].PeerId;
             playerController.UpdateRate = _playerUpdateRate;
             playerTransfrom.SetParent(thisTransform);
-            playerTurret.BulletContainer = m_bulletContainer;
-            playerTurret.ParticleContainer = m_particleContainer;
+            m_turrets[i].BulletContainer = m_bulletContainer;
+            m_turrets[i].ParticleContainer = m_particleContainer;
+            
 
             bool isPlayer = players[i].PeerId == gameSparksSession.PeerId;
             playerController.GameSparks = m_gameSparksManager;
@@ -88,7 +96,10 @@ public class MultiplayerGameManager : MonoBehaviour {
             // Set player multiplayer component instead...
             m_players[i] = playerController;
         }
-        
+
+        // Don't generate if not host
+        m_enemyGenerator.GameSparksManager = m_gameSparksManager;
+        m_enemyGenerator.SetupMultiplayer(m_gameSparksManager.RTSession.PeerId == 1);
     }
 	
 	// Update is called once per frame
@@ -106,40 +117,66 @@ public class MultiplayerGameManager : MonoBehaviour {
             case (int) MultiplayerCodes.PLAYER_BULLETS:
                 UpdatePlayerBullets(packet);
                 break;
+            case (int)MultiplayerCodes.ENEMY_SPAWN:
+                UpdateEnemiesSpawn(packet);
+                break;
         }
     }
 
-    private void UpdatePlayers(RTPacket packet)
+    private void CheckPeers(RTPacket packet, Action<int> action)
     {
         for (int i = 0; i < m_players.Length; ++i)
         {
             if (m_players[i].PeerID == packet.Sender)
             {
-                Transform playerTransform = m_players[i].transform;
-                Rigidbody2D playerRigidBody = m_players[i].GetComponent<Rigidbody2D>();
-                float playerPosZ = playerTransform.position.z;
-                Quaternion playerRot = playerTransform.rotation;
-                Vector3 playerAngles = playerRot.eulerAngles;
-
-                // Referenced from PlayerController.SendTransformUpdates()
-                Vector2 newPos = (Vector2)packet.Data.GetVector2(1);
-                float newRot = (float)packet.Data.GetFloat(2);
-                Vector2 newVel = (Vector2)packet.Data.GetVector2(3);
-
-                playerTransform.position = new Vector3(newPos.x, newPos.y, playerPosZ);
-                playerRigidBody.velocity = newVel;
-                playerAngles.z = newRot;
-                playerRot.eulerAngles = playerAngles;
-
-                playerTransform.rotation = playerRot;
+                action(i);
                 break;
             }
         }
     }
 
+    private void UpdatePlayers(RTPacket packet)
+    {
+        CheckPeers(packet, (index) =>
+        {
+            Transform playerTransform = m_players[index].transform;
+            Rigidbody2D playerRigidBody = m_players[index].GetComponent<Rigidbody2D>();
+            Quaternion playerRot = playerTransform.rotation;
+            Vector3 playerAngles = playerRot.eulerAngles;
+
+            // Referenced from PlayerController.SendTransformUpdates()
+            Vector3 newPos = packet.Data.GetVector3(1).Value;
+            float newRot = packet.Data.GetFloat(2).Value;
+            Vector2 newVel = packet.Data.GetVector2(3).Value;
+
+            playerTransform.position = newPos;
+            playerRigidBody.velocity = newVel;
+            playerAngles.z = newRot;
+            playerRot.eulerAngles = playerAngles;
+
+            playerTransform.rotation = playerRot;
+        });
+    }
+
     private void UpdatePlayerBullets(RTPacket packet)
     {
+        CheckPeers(packet, (index) =>
+        {
+            m_turrets[index].Fire();
+        });
+    }
 
+    private void UpdateEnemiesSpawn(RTPacket packet)
+    {
+        RTData data = packet.Data;
+
+        int id = data.GetInt(1).Value;
+        int target = data.GetInt(2).Value;
+        Vector2 position = data.GetVector2(3).Value;
+        float rotation = data.GetFloat(4).Value;
+        Vector2 velocity = data.GetVector2(5).Value;
+
+        m_enemyGenerator.GenerateEnemy(id, target, position, rotation, velocity);
     }
 
     private void OnPlayerDisconnected(int peer)

@@ -789,6 +789,34 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5242c624b6268ec4796cb9a1cd365ab2, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &550502480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 550502481}
+  m_Layer: 0
+  m_Name: Enemy Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &550502481
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 550502480}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1455629887}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &556034852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1062,10 @@ MonoBehaviour:
   - {fileID: 1481653990163984, guid: cabcc7295d796a44db7c92acf1db6593, type: 2}
   - {fileID: 1481653990163984, guid: cae5f084f6c48ae42b3ae7c724a4ad30, type: 2}
   - {fileID: 1481653990163984, guid: 7df928645d12e1c4bb8b71137e063c97, type: 2}
+  m_enemyGenerator: {fileID: 894979365}
   _playerUpdateRate: 0.005
+  _enemiesPosUpdateRate: 0.1
+  _enemiesSpawnUpdateRate: 0.05
 --- !u!1 &627158825
 GameObject:
   m_ObjectHideFlags: 0
@@ -2225,6 +2256,7 @@ Transform:
   - {fileID: 2098919340}
   - {fileID: 6323099}
   - {fileID: 1047026980}
+  - {fileID: 550502481}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

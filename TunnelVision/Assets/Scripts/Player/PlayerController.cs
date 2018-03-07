@@ -3,7 +3,7 @@ using GameSparks.RT;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Turret))]
@@ -37,7 +37,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Camera _camera;
     private Turret _turret;
-    private Soundbank _soundbank;
+
+
+    public UnityEvent OnFire;
 
 	// Use this for initialization
 	void Start ()
@@ -47,7 +49,6 @@ public class PlayerController : MonoBehaviour
         _camera = Camera.main;
 	    _turret = GetComponent<Turret>();
 	    _zoomValue = _camera.orthographicSize;
-	    _soundbank = GetComponent<Soundbank>();
 
         _turret.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
 
@@ -103,8 +104,8 @@ public class PlayerController : MonoBehaviour
         {
             if (_fireCooldown <= 0.0f)
             {
+                OnFire.Invoke();
                 _turret.Fire();
-                _soundbank.Play();
                 _fireCooldown = _fireSpeed;
                 _zoomValue -= _zoomInSpeed;
                 _zoomValue = Mathf.Max(_zoomValue, _zoomMax);
@@ -169,6 +170,8 @@ public class PlayerController : MonoBehaviour
         if (isPlayer)
         {
             StartCoroutine(SendTransformUpdates());
+            Turret turret = GetComponent<Turret>();
+            OnFire.AddListener(SendTurretFireUpdate);
         }
     }
 
@@ -184,7 +187,7 @@ public class PlayerController : MonoBehaviour
         {
             using (RTData data = RTData.Get())
             {
-                data.SetVector2(1, _transform.position);
+                data.SetVector3(1, _transform.position);
                 data.SetFloat(2, _transform.eulerAngles.z);
                 data.SetVector2(3, _rigidbody.velocity);
                 _gameSparksManager.RTSession.SendData(
@@ -194,6 +197,19 @@ public class PlayerController : MonoBehaviour
                     );
             }
             yield return new WaitForSeconds(UpdateRate);
+        }
+    }
+
+    void SendTurretFireUpdate()
+    {
+        using (RTData data = RTData.Get())
+        {
+            data.SetInt(1, 0);
+            _gameSparksManager.RTSession.SendData(
+                MultiplayerCodes.PLAYER_BULLETS.Int(),
+                GameSparksRT.DeliveryIntent.UNRELIABLE_SEQUENCED,
+                data
+                );
         }
     }
 
