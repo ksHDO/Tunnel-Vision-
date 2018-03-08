@@ -130,11 +130,17 @@ public class EnemyGenerator : MonoBehaviour
         Rigidbody2D rigidbody = behavior.GetComponent<Rigidbody2D>();
         using (RTData data = RTData.Get())
         {
+            Vector2 pos = enemyTransform.position;
+            Signs posSign = SignsExt.GetSign(pos);
+            Vector2 vel = rigidbody.velocity;
+            Signs velSign = SignsExt.GetSign(vel);
             data.SetInt(1, id);
             data.SetInt(2, target);
-            data.SetVector2(3, enemyTransform.position);
-            data.SetFloat(4, enemyTransform.rotation.eulerAngles.z);
-            data.SetVector2(5, rigidbody.velocity);
+            data.SetVector2(3, pos);
+            data.SetInt(4, (int)posSign);
+            data.SetFloat(5, enemyTransform.rotation.eulerAngles.z);
+            data.SetVector2(6, vel);
+            data.SetInt(7, (int)velSign);
             gameSparksManager.RTSession.SendData(
                 MultiplayerCodes.ENEMY_SPAWN.Int(),
                 GameSparksRT.DeliveryIntent.RELIABLE,

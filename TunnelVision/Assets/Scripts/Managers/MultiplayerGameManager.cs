@@ -147,7 +147,6 @@ public class MultiplayerGameManager : MonoBehaviour {
             // Referenced from PlayerController.SendTransformUpdates()
             Vector3 newPos = packet.Data.GetVector3(1).Value;
             Signs sign = (Signs) packet.Data.GetInt(2);
-            Debug.Log("sign value: " + (int)sign);
             newPos = SignsExt.Vector3Sign(newPos, sign);
 
             float newRot = packet.Data.GetFloat(3).Value;
@@ -161,8 +160,6 @@ public class MultiplayerGameManager : MonoBehaviour {
 
             playerTransform.rotation = playerRot;
 
-            Debug.Log("Pos: " + newPos);
-            Debug.Log("-----");
         });
     }
 
@@ -181,8 +178,10 @@ public class MultiplayerGameManager : MonoBehaviour {
         int id = data.GetInt(1).Value;
         int target = data.GetInt(2).Value;
         Vector2 position = data.GetVector2(3).Value;
-        float rotation = data.GetFloat(4).Value;
-        Vector2 velocity = data.GetVector2(5).Value;
+        position = SignsExt.Vector2Sign(position, (Signs)data.GetInt(4).Value);
+        float rotation = data.GetFloat(5).Value;
+        Vector2 velocity = data.GetVector2(6).Value;
+        velocity = SignsExt.Vector3Sign(velocity, (Signs)data.GetInt(7).Value);
 
         m_enemyGenerator.GenerateEnemy(id, target, position, rotation, velocity);
     }
