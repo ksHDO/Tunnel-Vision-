@@ -187,9 +187,15 @@ public class PlayerController : MonoBehaviour
         {
             using (RTData data = RTData.Get())
             {
-                data.SetVector3(1, _transform.position);
-                data.SetFloat(2, _transform.eulerAngles.z);
-                data.SetVector2(3, _rigidbody.velocity);
+                Vector3 pos = _transform.position;
+                Vector2 vel = _rigidbody.velocity;
+                data.SetVector3(1, pos);
+                Signs posSign = SignsExt.GetSign(pos);
+                data.SetInt(2, (int) posSign);
+                data.SetFloat(3, _transform.eulerAngles.z);
+                data.SetVector2(4, vel);
+                data.SetInt(5, (int) SignsExt.GetSign(vel));
+                Debug.Log("PlayerController Pos Sign: " + (int)posSign);
                 _gameSparksManager.RTSession.SendData(
                     MultiplayerCodes.PLAYER_POSITION.Int(),
                     GameSparksRT.DeliveryIntent.UNRELIABLE_SEQUENCED,

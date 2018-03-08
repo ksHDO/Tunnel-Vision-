@@ -146,8 +146,13 @@ public class MultiplayerGameManager : MonoBehaviour {
 
             // Referenced from PlayerController.SendTransformUpdates()
             Vector3 newPos = packet.Data.GetVector3(1).Value;
-            float newRot = packet.Data.GetFloat(2).Value;
-            Vector2 newVel = packet.Data.GetVector2(3).Value;
+            Signs sign = (Signs) packet.Data.GetInt(2);
+            Debug.Log("sign value: " + (int)sign);
+            newPos = SignsExt.Vector3Sign(newPos, sign);
+
+            float newRot = packet.Data.GetFloat(3).Value;
+            Vector2 newVel = packet.Data.GetVector2(4).Value;
+            newVel = SignsExt.Vector2Sign(newVel, (Signs)packet.Data.GetInt(5));
 
             playerTransform.position = newPos;
             playerRigidBody.velocity = newVel;
@@ -155,6 +160,9 @@ public class MultiplayerGameManager : MonoBehaviour {
             playerRot.eulerAngles = playerAngles;
 
             playerTransform.rotation = playerRot;
+
+            Debug.Log("Pos: " + newPos);
+            Debug.Log("-----");
         });
     }
 
