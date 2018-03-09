@@ -7,8 +7,17 @@ namespace Assets.Scripts.Constants
 {
     public enum EnemyTypes
     {
-        CASUAL = 0,
-
+        BASIC,
+        FAST,
+        FAST_FAST,
+        LARGE,
+        LARGE_SPAWNER,
+        SPAWNER_MINION,
+        CASUAL,
+        CASUAL_FAST,
+        BOOST,
+        CARRIER,
+        WEAK
     }
 
     public static class EnemyTypesExt

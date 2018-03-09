@@ -12,8 +12,8 @@ public class EnemyGenerator : MonoBehaviour
 
     [SerializeField] public Rigidbody2D[] players;
     [SerializeField] private PlayerScore score;
-    [SerializeField] private List<EnemyBehavior> _enemies;
-    public List<EnemyBehavior> Enemies { get { return _enemies; } set { _enemies = value; } }
+    [SerializeField] private List<EnemyTypes> _enemies;
+    public List<EnemyTypes> Enemies { get { return _enemies; } set { _enemies = value; } }
     [SerializeField] private float _startTimeToGenerate;
     [SerializeField] private float generateRand;
     [SerializeField] private float timeReduceSpeed;
@@ -26,6 +26,8 @@ public class EnemyGenerator : MonoBehaviour
     public bool EnableGeneration = true;
     private bool m_isHost = false;
 
+    public static EnemyGenerator Instance;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -33,22 +35,49 @@ public class EnemyGenerator : MonoBehaviour
 	    currentGenTime = _startTimeToGenerate;
 	    numEnemiesToKillCount = numEnemiesDefeatedToReduceSpawnTime;
 	}
-	
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
     void GenerateEnemy()
     {
         int enemyId = Random.Range(0, _enemies.Count);
-        int target = Random.Range(0, players.Length);
 
-        Vector2 pos = Random.insideUnitCircle.normalized * radius;
-
-        EnemyBehavior behavior = GenerateEnemy(enemyId, target, pos, 0, Vector2.zero);
-
-        if (m_isHost) MultiplayerSpawnEnemy(enemyId, behavior, target);
+        GenerateEnemy(enemyId);
     }
 
-    public EnemyBehavior GenerateEnemy(int id, int target, Vector2 position, float rotation, Vector2 velocity)
+    public void GenerateEnemy(int id)
     {
-        GameObject enemy = Instantiate(_enemies[id].gameObject);
+        Vector2 pos = Random.insideUnitCircle.normalized * radius;
+        GenerateEnemy(id, pos);
+    }
+
+    public void GenerateEnemy(int id, Vector2 pos)
+    {
+        int target = Random.Range(0, players.Length);
+
+        EnemyBehavior behavior = GenerateEnemy(id, target, pos, 0, Vector2.zero);
+
+        if (m_isHost) MultiplayerSpawnEnemy(id, behavior, target);
+    }
+
+
+    public EnemyBehavior GenerateEnemy(int id, int target, Vector2 position, float rotation, Vector2 velocity, bool forceGeneration = false)
+    {
+        if (!EnableGeneration && !forceGeneration)
+        {
+            return null;
+        }
+        GameObject enemy = Instantiate(EnemyList.Instance.Enemies[id].gameObject);
 
         EnemyBehavior behavior = enemy.GetComponent<EnemyBehavior>();
         behavior.Target = players[target];
@@ -126,6 +155,7 @@ public class EnemyGenerator : MonoBehaviour
 
     private void MultiplayerSpawnEnemy(int id, EnemyBehavior behavior, int target)
     {
+        if (behavior == null) return;
         Transform enemyTransform = behavior.transform;
         Rigidbody2D rigidbody = behavior.GetComponent<Rigidbody2D>();
         using (RTData data = RTData.Get())

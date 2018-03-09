@@ -6,6 +6,10 @@ public class CameraFollowObject : MonoBehaviour
 {
 
     [SerializeField] private Transform _objectToFollow;
+    public Transform ObjectToFollow {
+        get { return _objectToFollow; }
+        set { _objectToFollow = value; }
+    }
     [SerializeField] private float _smoothTime = 1;
     [SerializeField] private float _maxSpeed = 1;
     [SerializeField] private Bounds _followBounds;

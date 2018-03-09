@@ -16,6 +16,7 @@ public class MultiplayerGameManager : MonoBehaviour {
 
     
     [SerializeField] private GameObject[] PlayerPrefabs;
+    [SerializeField] private CameraFollowObject m_camera;
     [SerializeField] private EnemyGenerator m_enemyGenerator;
     [SerializeField] private PlayerScore m_playerScore;
 
@@ -79,19 +80,24 @@ public class MultiplayerGameManager : MonoBehaviour {
                 m_spawnPoints[i].position,
                 m_spawnPoints[i].rotation
             );
-            Transform playerTransfrom = player.transform;
+            Transform playerTransform = player.transform;
             PlayerController playerController = player.GetComponent<PlayerController>();
             m_turrets[i] = player.GetComponent<Turret>();
             enemyGenerator.players[i] = player.GetComponent<Rigidbody2D>();
             player.name = "Player " + players[i].PeerId.ToString();
             playerController.PeerID = players[i].PeerId;
             playerController.UpdateRate = _playerUpdateRate;
-            playerTransfrom.SetParent(thisTransform);
+            playerTransform.SetParent(thisTransform);
             m_turrets[i].BulletContainer = m_bulletContainer;
             m_turrets[i].ParticleContainer = m_particleContainer;
             
 
             bool isPlayer = players[i].PeerId == gameSparksSession.PeerId;
+            if (isPlayer)
+            {
+                m_camera.ObjectToFollow = playerTransform;
+            }
+
             playerController.GameSparks = m_gameSparksManager;
             playerController.SetupMultiplayer(m_spawnPoints[i], isPlayer);
 
@@ -207,7 +213,7 @@ public class MultiplayerGameManager : MonoBehaviour {
         Vector2 velocity = data.GetVector2(6).Value;
         velocity = SignsExt.Vector3Sign(velocity, (Signs)data.GetInt(7).Value);
 
-        m_enemyGenerator.GenerateEnemy(id, target, position, rotation, velocity);
+        m_enemyGenerator.GenerateEnemy(id, target, position, rotation, velocity, true);
     }
 
     private void OnPlayerDisconnected(int peer)

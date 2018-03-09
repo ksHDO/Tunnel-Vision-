@@ -170,7 +170,6 @@ public class PlayerController : MonoBehaviour
         if (isPlayer)
         {
             StartCoroutine(SendTransformUpdates());
-            Turret turret = GetComponent<Turret>();
             OnFire.AddListener(SendTurretFireUpdate);
         }
     }

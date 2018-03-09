@@ -1072,6 +1072,7 @@ MonoBehaviour:
   - {fileID: 1481653990163984, guid: cabcc7295d796a44db7c92acf1db6593, type: 2}
   - {fileID: 1481653990163984, guid: cae5f084f6c48ae42b3ae7c724a4ad30, type: 2}
   - {fileID: 1481653990163984, guid: 7df928645d12e1c4bb8b71137e063c97, type: 2}
+  m_camera: {fileID: 753100173}
   m_enemyGenerator: {fileID: 894979365}
   m_playerScore: {fileID: 101533321}
   _playerUpdateRate: 0.005
@@ -1609,6 +1610,7 @@ GameObject:
   m_Component:
   - component: {fileID: 894979366}
   - component: {fileID: 894979365}
+  - component: {fileID: 894979367}
   m_Layer: 0
   m_Name: EnemyGenerator
   m_TagString: Untagged
@@ -1634,16 +1636,7 @@ MonoBehaviour:
   - {fileID: 50901471510573000, guid: cabcc7295d796a44db7c92acf1db6593, type: 2}
   - {fileID: 50901471510573000, guid: cabcc7295d796a44db7c92acf1db6593, type: 2}
   score: {fileID: 101533321}
-  _enemies:
-  - {fileID: 114549542126219796, guid: 703039b9b332e3a4b98aef2d96ee45ea, type: 2}
-  - {fileID: 114401598691207176, guid: f0c1b794d0b560745b52e09b2ff79905, type: 2}
-  - {fileID: 114296264612810460, guid: 3445f60745ab0c449947ab4914a1c4ca, type: 2}
-  - {fileID: 114386450196279338, guid: 721bc66b5c15db94ea401ed4778512d9, type: 2}
-  - {fileID: 114607684674336258, guid: f195d89fdb4d063418a9974765ee0c5f, type: 2}
-  - {fileID: 114443168563005694, guid: c718b073858dece4faa34015f97bbaaa, type: 2}
-  - {fileID: 114443168563005694, guid: 003ed83ae1f581644b15893c6801665c, type: 2}
-  - {fileID: 114616593868650326, guid: e56723784e77ad546a38781fc8605765, type: 2}
-  - {fileID: 114009522327343568, guid: 7e4571a21e0469d49bf771378868f0f4, type: 2}
+  _enemies: 000000000100000002000000030000000400000006000000070000000800000009000000
   _startTimeToGenerate: 5
   generateRand: 0.1
   timeReduceSpeed: 0.1
@@ -1663,6 +1656,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &894979367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 894979364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d488036099b84a46ad04c902c67aec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyList:
+  - {fileID: 114549542126219796, guid: 703039b9b332e3a4b98aef2d96ee45ea, type: 2}
+  - {fileID: 114616593868650326, guid: e56723784e77ad546a38781fc8605765, type: 2}
+  - {fileID: 114009522327343568, guid: 7e4571a21e0469d49bf771378868f0f4, type: 2}
+  - {fileID: 114443168563005694, guid: c718b073858dece4faa34015f97bbaaa, type: 2}
+  - {fileID: 114443168563005694, guid: 003ed83ae1f581644b15893c6801665c, type: 2}
+  - {fileID: 114401598691207176, guid: f0c1b794d0b560745b52e09b2ff79905, type: 2}
+  - {fileID: 114296264612810460, guid: 3445f60745ab0c449947ab4914a1c4ca, type: 2}
+  - {fileID: 114386450196279338, guid: 721bc66b5c15db94ea401ed4778512d9, type: 2}
+  - {fileID: 114607684674336258, guid: f195d89fdb4d063418a9974765ee0c5f, type: 2}
+  - {fileID: 114412629323711374, guid: c4a06a37dbc0d954994e72792c8f7dc0, type: 2}
+  - {fileID: 114356908004310054, guid: f9252b602f80b2d4fab4e70b83b25de1, type: 2}
 --- !u!1 &948783799
 GameObject:
   m_ObjectHideFlags: 0

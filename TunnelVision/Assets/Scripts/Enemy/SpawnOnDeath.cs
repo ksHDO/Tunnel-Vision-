@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Constants;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnOnDeath : MonoBehaviour
 {
 
-    [SerializeField] private List<GameObject> _objects;
+    [SerializeField] private List<EnemyTypes> _enemyIds;
     [SerializeField] private float _radius;
 
     private Transform _transform;
@@ -36,12 +37,10 @@ public class SpawnOnDeath : MonoBehaviour
     {
         if (!_isExiting)
         {
-            foreach (GameObject o in _objects)
+            foreach (int enemyId in _enemyIds)
             {
-                GameObject obj = Instantiate(o);
-                obj.transform.position = _transform.position + (Vector3) (Random.insideUnitCircle * _radius);
-                obj.GetComponent<EnemyInfo>().PlayerScore = _enemyInfo.PlayerScore;
-                obj.GetComponent<EnemyBehavior>().Target = _enemyBehavior.Target;
+                Vector2 position = _transform.position + (Vector3)(Random.insideUnitCircle * _radius);
+                EnemyGenerator.Instance.GenerateEnemy(enemyId, position);
 
             }
         }
