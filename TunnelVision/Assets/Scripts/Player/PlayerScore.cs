@@ -9,7 +9,7 @@ public class PlayerScore : MonoBehaviour
 {
     [SerializeField] private float _score;
     [SerializeField] private FloatEvent OnNewHighScore;
-    public float Score { get { return _score; } private set { _score = value; } }
+    public float Score { get { return _score; } set { _score = value; } }
 
     public float HighScore
     {

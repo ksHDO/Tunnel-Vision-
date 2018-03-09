@@ -13,9 +13,11 @@ public class MultiplayerGameManager : MonoBehaviour {
 
     [SerializeField] private GameObject m_bulletContainer;
     [SerializeField] private GameObject m_particleContainer;
+
     
     [SerializeField] private GameObject[] PlayerPrefabs;
     [SerializeField] private EnemyGenerator m_enemyGenerator;
+    [SerializeField] private PlayerScore m_playerScore;
 
     [Header("Update Rate")]
     [SerializeField]
@@ -111,6 +113,9 @@ public class MultiplayerGameManager : MonoBehaviour {
     {
         switch (packet.OpCode)
         {
+            case (int)MultiplayerCodes.GAME_POINTS:
+                UpdatePoints(packet);
+                break;
             case (int) MultiplayerCodes.PLAYER_POSITION:
                 UpdatePlayers(packet);
                 break;
@@ -132,6 +137,25 @@ public class MultiplayerGameManager : MonoBehaviour {
                 action(i);
                 break;
             }
+        }
+    }
+
+    private void UpdatePoints(RTPacket packet)
+    {
+        m_playerScore.Score = packet.Data.GetFloat(1).Value;
+    }
+
+    public void SendPoints(float value)
+    {
+        using (RTData data = RTData.Get())
+        {
+            float score = m_playerScore.Score;
+            data.SetFloat(1, score);
+            m_gameSparksManager.RTSession.SendData(
+                MultiplayerCodes.GAME_POINTS.Int(),
+                GameSparksRT.DeliveryIntent.RELIABLE,
+                data
+            );
         }
     }
 

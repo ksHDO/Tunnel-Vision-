@@ -9,10 +9,13 @@ namespace Assets.Scripts.Constants
     public enum MultiplayerCodes
     {
         START_GAME = 1,
-        PLAYER_POSITION = 2,
-        PLAYER_BULLETS = 3,
-        ENEMY_SPAWN = 4,
-        ENEMY_POSITION
+        GAME_POINTS,
+        PLAYER_POSITION,
+        PLAYER_BULLETS,
+        PLAYER_HEALTH,
+        ENEMY_SPAWN,
+        ENEMY_POSITION,
+        COLLECTABLE_SPAWN
     }
 
     [Flags]

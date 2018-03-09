@@ -195,7 +195,6 @@ public class PlayerController : MonoBehaviour
                 data.SetFloat(3, _transform.eulerAngles.z);
                 data.SetVector2(4, vel);
                 data.SetInt(5, (int) SignsExt.GetSign(vel));
-                Debug.Log("PlayerController Pos Sign: " + (int)posSign);
                 _gameSparksManager.RTSession.SendData(
                     MultiplayerCodes.PLAYER_POSITION.Int(),
                     GameSparksRT.DeliveryIntent.UNRELIABLE_SEQUENCED,
