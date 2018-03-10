@@ -105,7 +105,8 @@ public class UiMenuMultiplayer : MonoBehaviour {
 
     void PlayerDisconnect(int peer)
     {
-        m_playerTexts[peer + 1].gameObject.SetActive(false);
+        if (m_playerTexts[peer + 1])
+            m_playerTexts[peer + 1].gameObject.SetActive(false);
     }
 
     void PacketReceived(RTPacket packet)

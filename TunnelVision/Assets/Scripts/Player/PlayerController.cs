@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Camera _camera;
     private Turret _turret;
-
+    private PlayerHealth _playerHealth;
 
     public UnityEvent OnFire;
 
@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
         _camera = Camera.main;
 	    _turret = GetComponent<Turret>();
 	    _zoomValue = _camera.orthographicSize;
+        _playerHealth = GetComponent<PlayerHealth>();
 
         _turret.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
 
@@ -171,6 +172,7 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(SendTransformUpdates());
             OnFire.AddListener(SendTurretFireUpdate);
+            GetComponent<PlayerHealth>()._onPlayerHpModifiedNewHealth.AddListener(SendHealthUpdate);
         }
     }
 
@@ -217,5 +219,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void SendHealthUpdate(float hp)
+    {
+        using (RTData data = RTData.Get())
+        {
+            data.SetFloat(1, hp);
+            GameSparks.RTSession.SendData(
+                MultiplayerCodes.PLAYER_HEALTH.Int(),
+                GameSparksRT.DeliveryIntent.RELIABLE,
+                data
+                );
+        }
+    }
     #endregion
 }

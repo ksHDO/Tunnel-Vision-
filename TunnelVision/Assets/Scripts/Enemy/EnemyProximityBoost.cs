@@ -19,8 +19,9 @@ public class EnemyProximityBoost : EnemyBehavior
 
     protected override void FixedUpdate()
     {
+        if (Target == null) return;
         Vector2 vel;
-
+        
 
         if ((transform.position-Target.transform.position).sqrMagnitude <= boostDistanceSqr)
         {

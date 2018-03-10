@@ -63,15 +63,17 @@ public class EnemyGenerator : MonoBehaviour
 
     public void GenerateEnemy(int id, Vector2 pos)
     {
-        int target = Random.Range(0, players.Length);
+        EnemyBehavior behavior = GenerateEnemy(id, NearestPlayer(pos), pos, 0, Vector2.zero);
 
-        EnemyBehavior behavior = GenerateEnemy(id, target, pos, 0, Vector2.zero);
-
-        if (m_isHost) MultiplayerSpawnEnemy(id, behavior, target);
+        if (m_isHost) MultiplayerSpawnEnemy(id, behavior);
     }
 
+    public EnemyBehavior GenerateEnemy(int id, Vector2 position, float rotation, Vector2 velocity, bool forceGeneration = false)
+    {
+        return GenerateEnemy(id, NearestPlayer(position), position, rotation, velocity, forceGeneration);
+    }
 
-    public EnemyBehavior GenerateEnemy(int id, int target, Vector2 position, float rotation, Vector2 velocity, bool forceGeneration = false)
+    public EnemyBehavior GenerateEnemy(int id, Rigidbody2D target, Vector2 position, float rotation, Vector2 velocity, bool forceGeneration = false)
     {
         if (!EnableGeneration && !forceGeneration)
         {
@@ -80,7 +82,7 @@ public class EnemyGenerator : MonoBehaviour
         GameObject enemy = Instantiate(EnemyList.Instance.Enemies[id].gameObject);
 
         EnemyBehavior behavior = enemy.GetComponent<EnemyBehavior>();
-        behavior.Target = players[target];
+        behavior.Target = target;
 
         EnemyInfo enemyInfo = enemy.GetComponent<EnemyInfo>();
         enemyInfo.PlayerScore = score;
@@ -138,6 +140,25 @@ public class EnemyGenerator : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 
+    public Rigidbody2D NearestPlayer(Vector2 pos)
+    {
+        float distance = float.PositiveInfinity;
+        Rigidbody2D nearest = null;
+        foreach (Rigidbody2D player in players)
+        {
+            if (player)
+            {
+                float sqrDistance = (pos - (player.position)).sqrMagnitude;
+                if (sqrDistance < distance)
+                {
+                    nearest = player;
+                    distance = sqrDistance;
+                }
+            }
+        }
+        return nearest;
+    }
+
     #region Multiplayer
     private GameSparksManager gameSparksManager;
     public GameSparksManager GameSparksManager
@@ -153,7 +174,7 @@ public class EnemyGenerator : MonoBehaviour
         //    StartCoroutine(UpdateEnemies());
     }
 
-    private void MultiplayerSpawnEnemy(int id, EnemyBehavior behavior, int target)
+    private void MultiplayerSpawnEnemy(int id, EnemyBehavior behavior)
     {
         if (behavior == null) return;
         Transform enemyTransform = behavior.transform;
@@ -165,7 +186,6 @@ public class EnemyGenerator : MonoBehaviour
             Vector2 vel = rigidbody.velocity;
             Signs velSign = SignsExt.GetSign(vel);
             data.SetInt(1, id);
-            data.SetInt(2, target);
             data.SetVector2(3, pos);
             data.SetInt(4, (int)posSign);
             data.SetFloat(5, enemyTransform.rotation.eulerAngles.z);

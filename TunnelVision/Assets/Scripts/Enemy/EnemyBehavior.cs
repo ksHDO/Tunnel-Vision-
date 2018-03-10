@@ -37,12 +37,16 @@ public class EnemyBehavior : MonoBehaviour
 	// Update is called once per frame
 	protected virtual void FixedUpdate ()
 	{
+        // Retarget to nearest player
+        Target = EnemyGenerator.Instance.NearestPlayer(Transform.position);
+
 	    if (!_inPlayArea.Contains(Transform.position))
 	    {
 	        Destroy(gameObject);
 	    }
 	    Transform.right = Rigidbody.velocity;
 
+        
     }
 
     private void OnDrawGizmosSelected()

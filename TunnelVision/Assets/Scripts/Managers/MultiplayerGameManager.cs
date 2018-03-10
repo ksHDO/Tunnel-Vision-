@@ -36,6 +36,8 @@ public class MultiplayerGameManager : MonoBehaviour {
 
     private PlayerController[] m_players;
     private Turret[] m_turrets;
+    private PlayerHealth[] m_playerHealth;
+
     public bool IsHost { get; private set; }
 
 	// Use this for initialization
@@ -67,6 +69,7 @@ public class MultiplayerGameManager : MonoBehaviour {
 
         m_players = new PlayerController[count];
         m_turrets = new Turret[count];
+        m_playerHealth = new PlayerHealth[count];
 
         if (PlayerPrefabs.Length < count)
         {
@@ -90,7 +93,7 @@ public class MultiplayerGameManager : MonoBehaviour {
             );
             Transform playerTransform = player.transform;
             PlayerController playerController = player.GetComponent<PlayerController>();
-            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+            m_playerHealth[i] = player.GetComponent<PlayerHealth>();
             m_turrets[i] = player.GetComponent<Turret>();
             enemyGenerator.players[i] = player.GetComponent<Rigidbody2D>();
             player.name = "Player " + players[i].PeerId.ToString();
@@ -118,9 +121,9 @@ public class MultiplayerGameManager : MonoBehaviour {
             hpBar.transform.SetParent(UiCanvas);
             hpBar.GetComponent<FollowTarget>().target = playerTransform;
             HpBarUi hpBarUi = hpBar.GetComponent<HpBarUi>();
-            hpBarUi.Health = playerHealth;
-            playerHealth._onPlayerHpModified.AddListener(hpBarUi.UpdateHealth);
-            playerHealth._onPlayerDeath.AddListener(PlayerDead);
+            hpBarUi.Health = m_playerHealth[i];
+            m_playerHealth[i]._onPlayerHpModified.AddListener(hpBarUi.UpdateHealth);
+            m_playerHealth[i]._onPlayerDeath.AddListener(PlayerDead);
         }
 
         // Don't generate if not host
@@ -161,6 +164,9 @@ public class MultiplayerGameManager : MonoBehaviour {
                 break;
             case (int) MultiplayerCodes.PLAYER_BULLETS:
                 UpdatePlayerBullets(packet);
+                break;
+            case (int)MultiplayerCodes.PLAYER_HEALTH:
+                UpdatePlayerHealth(packet);
                 break;
             case (int)MultiplayerCodes.ENEMY_SPAWN:
                 UpdateEnemiesSpawn(packet);
@@ -235,20 +241,28 @@ public class MultiplayerGameManager : MonoBehaviour {
         });
     }
 
+    private void UpdatePlayerHealth(RTPacket packet)
+    {
+        CheckPeers(packet, (index) =>
+        {
+            m_playerHealth[index].HP = packet.Data.GetFloat(1).Value;
+        });
+    }
+
     private void UpdateEnemiesSpawn(RTPacket packet)
     {
         RTData data = packet.Data;
 
         int id = data.GetInt(1).Value;
-        int target = data.GetInt(2).Value;
         Vector2 position = data.GetVector2(3).Value;
         position = SignsExt.Vector2Sign(position, (Signs)data.GetInt(4).Value);
         float rotation = data.GetFloat(5).Value;
         Vector2 velocity = data.GetVector2(6).Value;
         velocity = SignsExt.Vector3Sign(velocity, (Signs)data.GetInt(7).Value);
 
-        m_enemyGenerator.GenerateEnemy(id, target, position, rotation, velocity, true);
+        m_enemyGenerator.GenerateEnemy(id, position, rotation, velocity, true);
     }
+
 
     private void OnPlayerDisconnected(int peer)
     {
