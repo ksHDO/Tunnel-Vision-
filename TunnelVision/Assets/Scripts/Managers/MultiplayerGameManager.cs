@@ -6,6 +6,7 @@ using Assets.Scripts.Constants;
 using System;
 using System.Linq;
 using UnityStandardAssets.Utility;
+using UnityEngine.Events;
 
 public class MultiplayerGameManager : MonoBehaviour {
 
@@ -22,6 +23,8 @@ public class MultiplayerGameManager : MonoBehaviour {
     [SerializeField] private CameraFollowObject m_camera;
     [SerializeField] private EnemyGenerator m_enemyGenerator;
     [SerializeField] private PlayerScore m_playerScore;
+
+    [SerializeField] private UnityEvent m_onAllPlayersDead;
 
     [Header("Update Rate")]
     [SerializeField]
@@ -116,7 +119,7 @@ public class MultiplayerGameManager : MonoBehaviour {
             HpBarUi hpBarUi = hpBar.GetComponent<HpBarUi>();
             hpBarUi.Health = playerHealth;
             playerHealth._onPlayerHpModified.AddListener(hpBarUi.UpdateHealth);
-            
+            playerHealth._onPlayerDeath.AddListener(PlayerDead);
         }
 
         // Don't generate if not host
@@ -124,10 +127,24 @@ public class MultiplayerGameManager : MonoBehaviour {
         m_enemyGenerator.SetupMultiplayer(m_gameSparksManager.RTSession.PeerId == 1);
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	private void PlayerDead()
+    {
+        bool playersStillAlive = false;
+        for (int i = 0; i < m_players.Length; ++i)
+        {
+            if (!m_players[i]) continue;
+            PlayerHealth ph = m_players[i].GetComponent<PlayerHealth>();
+            if (ph.HP > 0)
+            {
+                playersStillAlive = true;
+                break;
+            }
+        }
+        if (!playersStillAlive)
+        {
+            m_onAllPlayersDead.Invoke();
+        }
+    }
 
     private void PacketReceived(RTPacket packet)
     {
