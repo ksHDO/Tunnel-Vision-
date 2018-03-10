@@ -36,6 +36,7 @@ public class MultiplayerGameManager : MonoBehaviour {
 
     private PlayerController[] m_players;
     private Turret[] m_turrets;
+    public bool IsHost { get; private set; }
 
 	// Use this for initialization
 	void Start () {
@@ -124,7 +125,9 @@ public class MultiplayerGameManager : MonoBehaviour {
 
         // Don't generate if not host
         m_enemyGenerator.GameSparksManager = m_gameSparksManager;
-        m_enemyGenerator.SetupMultiplayer(m_gameSparksManager.RTSession.PeerId == 1);
+        IsHost = m_gameSparksManager.RTSession.PeerId == 1;
+        m_enemyGenerator.SetupMultiplayer(IsHost);
+        m_playerScore.MultiplayerManager = this;
     }
 	
 	private void PlayerDead()
