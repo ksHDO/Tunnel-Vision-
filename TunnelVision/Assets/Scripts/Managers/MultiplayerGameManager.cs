@@ -5,17 +5,20 @@ using UnityEngine;
 using Assets.Scripts.Constants;
 using System;
 using System.Linq;
+using UnityStandardAssets.Utility;
 
 public class MultiplayerGameManager : MonoBehaviour {
 
     [SerializeField] private string GameSparksManagerObjectName;
     [SerializeField] private Transform SpawnPointParent;
+    [SerializeField] private Transform UiCanvas;
 
     [SerializeField] private GameObject m_bulletContainer;
     [SerializeField] private GameObject m_particleContainer;
 
     
     [SerializeField] private GameObject[] PlayerPrefabs;
+    [SerializeField] private GameObject m_hpBarPrefab;
     [SerializeField] private CameraFollowObject m_camera;
     [SerializeField] private EnemyGenerator m_enemyGenerator;
     [SerializeField] private PlayerScore m_playerScore;
@@ -75,6 +78,7 @@ public class MultiplayerGameManager : MonoBehaviour {
 
         for (int i = 0; i < count; ++i)
         {
+            // Spawn Player
             GameObject player = Instantiate(
                 PlayerPrefabs[i],
                 m_spawnPoints[i].position,
@@ -82,6 +86,7 @@ public class MultiplayerGameManager : MonoBehaviour {
             );
             Transform playerTransform = player.transform;
             PlayerController playerController = player.GetComponent<PlayerController>();
+            PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
             m_turrets[i] = player.GetComponent<Turret>();
             enemyGenerator.players[i] = player.GetComponent<Rigidbody2D>();
             player.name = "Player " + players[i].PeerId.ToString();
@@ -103,6 +108,15 @@ public class MultiplayerGameManager : MonoBehaviour {
 
             // Set player multiplayer component instead...
             m_players[i] = playerController;
+
+            // Spawn HpBar
+            GameObject hpBar = Instantiate(m_hpBarPrefab);
+            hpBar.transform.SetParent(UiCanvas);
+            hpBar.GetComponent<FollowTarget>().target = playerTransform;
+            HpBarUi hpBarUi = hpBar.GetComponent<HpBarUi>();
+            hpBarUi.Health = playerHealth;
+            playerHealth._onPlayerHpModified.AddListener(hpBarUi.UpdateHealth);
+            
         }
 
         // Don't generate if not host

@@ -22,7 +22,7 @@ public class EnemyProximityBoost : EnemyBehavior
         Vector2 vel;
 
 
-        if ((transform.position-GlobalInfo.Player.transform.position).sqrMagnitude <= boostDistanceSqr)
+        if ((transform.position-Target.transform.position).sqrMagnitude <= boostDistanceSqr)
         {
             vel = Seek(Target.position, boostSpeed);
         }

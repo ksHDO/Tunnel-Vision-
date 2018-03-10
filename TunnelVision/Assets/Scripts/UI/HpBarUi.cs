@@ -6,6 +6,11 @@ public class HpBarUi : MonoBehaviour
 {
 
     [SerializeField] private PlayerHealth _health;
+    public PlayerHealth Health
+    {
+        get { return _health; }
+        set { _health = value; }
+    }
     private ColorTransition _colorTransition;
     private ImageCutOff _cutOff;
 
