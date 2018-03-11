@@ -98,15 +98,30 @@ public class UiMenuMultiplayer : MonoBehaviour {
         StartGame();
     }
 
+    void ShowAllConnected()
+    {
+        List<int> peers = m_gameSparksManager.RTSession.ActivePeers;
+        for (int i = 0; i < m_playerTexts.Length; i++)
+        {
+            if (peers.Contains(i + 1))
+            {
+                if (m_playerTexts[i].gameObject)
+                    m_playerTexts[i].gameObject.SetActive(true);
+            }
+        }
+    }
+
     void PlayerConnected(int peer)
     {
-        m_playerTexts[peer + 1].gameObject.SetActive(true);
+        ShowAllConnected();
+        //m_playerTexts[peer + 1].gameObject.SetActive(true);
     }
 
     void PlayerDisconnect(int peer)
     {
-        if (m_playerTexts[peer + 1])
-            m_playerTexts[peer + 1].gameObject.SetActive(false);
+        ShowAllConnected();
+        //if (m_playerTexts[peer + 1])
+        //    m_playerTexts[peer + 1].gameObject.SetActive(false);
     }
 
     void PacketReceived(RTPacket packet)
