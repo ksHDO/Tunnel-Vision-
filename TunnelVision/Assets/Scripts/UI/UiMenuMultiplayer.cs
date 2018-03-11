@@ -105,7 +105,7 @@ public class UiMenuMultiplayer : MonoBehaviour {
         {
             if (peers.Contains(i + 1))
             {
-                if (m_playerTexts[i].gameObject)
+                if (m_playerTexts[i])
                     m_playerTexts[i].gameObject.SetActive(true);
             }
         }
