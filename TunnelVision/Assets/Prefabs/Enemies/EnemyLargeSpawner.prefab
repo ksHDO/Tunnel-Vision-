@@ -268,10 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2ce5fc41afa8748b0a1f1c5935b0fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objects:
-  - {fileID: 1677213808980792, guid: c4a06a37dbc0d954994e72792c8f7dc0, type: 2}
-  - {fileID: 1677213808980792, guid: c4a06a37dbc0d954994e72792c8f7dc0, type: 2}
-  - {fileID: 1677213808980792, guid: c4a06a37dbc0d954994e72792c8f7dc0, type: 2}
+  _enemyIds: 0a0000000a0000000a000000
   _radius: 0.3
 --- !u!212 &212487109967913862
 SpriteRenderer:

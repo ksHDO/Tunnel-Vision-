@@ -1,13 +1,17 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Constants;
+using GameSparks.RT;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Turret))]
 [RequireComponent(typeof(PlayerHealth))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlayerController : MonoBehaviour
 {
+
     [SerializeField] private float _movementSpeed = 10;
     [SerializeField] private float _rotationSpeed = 5;
     [SerializeField] private float _fireSpeed = 1.0f;
@@ -33,7 +37,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Camera _camera;
     private Turret _turret;
-    private Soundbank _soundbank;
+    private PlayerHealth _playerHealth;
+
+    public UnityEvent OnFire;
 
 	// Use this for initialization
 	void Start ()
@@ -43,10 +49,13 @@ public class PlayerController : MonoBehaviour
         _camera = Camera.main;
 	    _turret = GetComponent<Turret>();
 	    _zoomValue = _camera.orthographicSize;
-	    _soundbank = GetComponent<Soundbank>();
+        _playerHealth = GetComponent<PlayerHealth>();
+
+        _turret.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
 
 	    _isWaitingForZoomOut = false;
 	}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -55,8 +64,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        HandleMovement();
-        HandleMouse();
+        if (IsPlayer)
+        {
+            HandleMovement();
+            HandleMouse();
+        }
     }
 
     void HandleMovement()
@@ -69,6 +81,8 @@ public class PlayerController : MonoBehaviour
         Vector2 movement = new Vector2(horizontal, vertical) * _movementSpeed;
 
         _rigidbody.AddForce(movement);
+
+        
     }
 
     void HandleMouse()
@@ -91,8 +105,8 @@ public class PlayerController : MonoBehaviour
         {
             if (_fireCooldown <= 0.0f)
             {
+                OnFire.Invoke();
                 _turret.Fire();
-                _soundbank.Play();
                 _fireCooldown = _fireSpeed;
                 _zoomValue -= _zoomInSpeed;
                 _zoomValue = Mathf.Max(_zoomValue, _zoomMax);
@@ -127,4 +141,95 @@ public class PlayerController : MonoBehaviour
 
         _camera.orthographicSize = Mathf.SmoothDamp(_camera.orthographicSize, _zoomValue, ref _dtZoom, _smoothTime, _maxSpeed);
     }
+
+
+    // Multiplayer
+    // --------------
+    #region Multiplayer
+
+    [Header("Multiplayer")]
+    [SerializeField] private bool _isPlayer = true;
+    public float UpdateRate = 0.3f;
+    public int PeerID;
+    public bool IsPlayer
+    {
+        get { return _isPlayer; }
+        set { _isPlayer = value; }
+    }
+    private GameSparksManager _gameSparksManager;
+    public GameSparksManager GameSparks
+    {
+        get { return _gameSparksManager; }
+        set { _gameSparksManager = value; }
+    }
+
+    public void SetupMultiplayer(Transform spawnPos, bool isPlayer)
+    {
+        IsPlayer = isPlayer;
+        Transform selfTransform = transform;
+        transform.position = spawnPos.position;
+        if (isPlayer)
+        {
+            StartCoroutine(SendTransformUpdates());
+            OnFire.AddListener(SendTurretFireUpdate);
+            GetComponent<PlayerHealth>()._onPlayerHpModifiedNewHealth.AddListener(SendHealthUpdate);
+        }
+    }
+
+    IEnumerator SendTransformUpdates()
+    {
+        // To be safe
+        if (!_transform)
+            _transform = transform;
+        if (!_rigidbody)
+            _rigidbody = GetComponent<Rigidbody2D>();
+
+        while (true)
+        {
+            using (RTData data = RTData.Get())
+            {
+                Vector3 pos = _transform.position;
+                Vector2 vel = _rigidbody.velocity;
+                data.SetVector3(1, pos);
+                Signs posSign = SignsExt.GetSign(pos);
+                data.SetInt(2, (int) posSign);
+                data.SetFloat(3, _transform.eulerAngles.z);
+                data.SetVector2(4, vel);
+                data.SetInt(5, (int) SignsExt.GetSign(vel));
+                _gameSparksManager.RTSession.SendData(
+                    MultiplayerCodes.PLAYER_POSITION.Int(),
+                    GameSparksRT.DeliveryIntent.UNRELIABLE_SEQUENCED,
+                    data
+                    );
+            }
+            yield return new WaitForSeconds(UpdateRate);
+        }
+    }
+
+    void SendTurretFireUpdate()
+    {
+        using (RTData data = RTData.Get())
+        {
+            data.SetInt(1, 0);
+            _gameSparksManager.RTSession.SendData(
+                MultiplayerCodes.PLAYER_BULLETS.Int(),
+                GameSparksRT.DeliveryIntent.UNRELIABLE_SEQUENCED,
+                data
+                );
+        }
+    }
+
+    void SendHealthUpdate(float hp)
+    {
+        using (RTData data = RTData.Get())
+        {
+            data.SetFloat(1, hp);
+            GameSparks.RTSession.SendData(
+                MultiplayerCodes.PLAYER_HEALTH.Int(),
+                GameSparksRT.DeliveryIntent.RELIABLE,
+                data
+                );
+        }
+    }
+    #endregion
 }

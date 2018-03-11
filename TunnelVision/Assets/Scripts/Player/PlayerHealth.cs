@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Constants;
+using GameSparks.RT;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,7 +11,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float _hp;
     [SerializeField] private float _maxHp;
     public float HP {
-        get { return _hp; } private set { _hp = value; }
+        get { return _hp; } set { _hp = value; }
     }
 
     public float MaxHealth
@@ -20,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] public FloatEvent _onPlayerHpRemoved;
     [SerializeField] public FloatEvent _onPlayerHpAdded;
     [SerializeField] public FloatEvent _onPlayerHpModified;
+    [SerializeField] public FloatEvent _onPlayerHpModifiedNewHealth;
     [SerializeField] public UnityEvent _onPlayerDeath;
 
     public void AddHp(float value)
@@ -31,6 +34,7 @@ public class PlayerHealth : MonoBehaviour
 
         HP += value;
         _onPlayerHpModified.Invoke(value);
+        _onPlayerHpModifiedNewHealth.Invoke(HP);
     }
 	// Use this for initialization
 	void Start () {

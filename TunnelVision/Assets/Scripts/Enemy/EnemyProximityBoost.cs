@@ -19,10 +19,11 @@ public class EnemyProximityBoost : EnemyBehavior
 
     protected override void FixedUpdate()
     {
+        if (Target == null) return;
         Vector2 vel;
+        
 
-
-        if ((transform.position-GlobalInfo.Player.transform.position).sqrMagnitude <= boostDistanceSqr)
+        if ((transform.position-Target.transform.position).sqrMagnitude <= boostDistanceSqr)
         {
             vel = Seek(Target.position, boostSpeed);
         }

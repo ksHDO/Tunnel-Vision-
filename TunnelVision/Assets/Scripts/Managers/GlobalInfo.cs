@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class GlobalInfo : MonoBehaviour {
 
-    [SerializeField] private GameObject player;
-    public static GameObject Player { get; private set; }
-
-
-    [SerializeField] private EnemyGenerator enemyGenerator;
     [SerializeField] private GameObject m_particleContainer;
     [SerializeField] private GameObject m_bulletContainer;
     [SerializeField] private GameObject m_collectableContainer;
     [SerializeField] private GameObject m_upperLeft;
     [SerializeField] private GameObject m_lowerRight;
-    public static EnemyGenerator EnemyGenerator { get; private set; }
+    public static Rigidbody2D[] Players
+    {
+        get
+        {
+            return EnemyGenerator.Instance.players;
+        }
+    }
     public static GameObject ParticleContainer { get; private set; }
     public static GameObject BulletContainer { get; private set; }
     public static GameObject CollectableContainer { get; private set; }
@@ -24,8 +25,6 @@ public class GlobalInfo : MonoBehaviour {
 
     // Use this for initialization
     void Awake () {
-        EnemyGenerator = enemyGenerator;
-        Player = player;
         ParticleContainer = m_particleContainer;
         BulletContainer = m_bulletContainer;
         CollectableContainer = m_collectableContainer;

@@ -9,11 +9,12 @@ public class SetupApp : MonoBehaviour
 {
 
     [SerializeField] private string startScene;
+
     // Use this for initialization
     void Start()
     {
         GameSparks.Core.GS.GameSparksAvailable += Setup;
-
+        
 
     }
 

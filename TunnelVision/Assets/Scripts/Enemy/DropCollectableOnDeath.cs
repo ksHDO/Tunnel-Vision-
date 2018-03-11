@@ -41,6 +41,7 @@ public class DropCollectableOnDeath : MonoBehaviour
     {
         for (int i = 0; i < _collectableNumber; i++)
         {
+            if (_collectable == null) continue;
             GameObject o = Instantiate(_collectable.gameObject);
             o.transform.parent = GlobalInfo.ParticleContainer.transform;
             o.GetComponent<Collectable_Points>().m_pointValue = _collectableWorth;

@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212456541069050004}
   - component: {fileID: 50236871813586732}
   - component: {fileID: 58036681579754414}
-  - component: {fileID: 114484690814017056}
+  - component: {fileID: 114811987701049916}
   m_Layer: 0
   m_Name: Collectable_Health_01
   m_TagString: Untagged
@@ -78,7 +78,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.7
---- !u!114 &114484690814017056
+--- !u!114 &114811987701049916
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,10 +86,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1351185228522906}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14229a6b9210ccb488108a74d6b6ff69, type: 3}
+  m_Script: {fileID: 11500000, guid: ee53e10ac8e89cd45bf2a77c08889eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _system: {fileID: 198231790742280296, guid: 1b4a2efb5a8c5d649b939ba580792042, type: 2}
+  _system: {fileID: 0}
   _lifeTime: 5
   _fadeTime: 1
   m_recoverAmount: 1

@@ -19,7 +19,7 @@ public class DestroyOnCollide : MonoBehaviour
         t.position = transform.position;
         if (transform.parent != null)
         {
-            SendMessageUpwards("Destroy");
+            SendMessageUpwards("Destroy", SendMessageOptions.DontRequireReceiver);
         }
 
         if (_parent != null)
