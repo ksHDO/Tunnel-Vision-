@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 58823370955833452}
   - component: {fileID: 114232499813078636}
   - component: {fileID: 114460767081555882}
-  - component: {fileID: 114616593868650326}
+  - component: {fileID: 114864169899205658}
   m_Layer: 10
   m_Name: EnemyBoost
   m_TagString: Enemy
@@ -233,9 +233,8 @@ MonoBehaviour:
   _radius: 1
   _maxRotationSpeed: 3
   _minRotationSpeed: 300
-  _collectable: {fileID: 114628810121526118, guid: 1c42d39ab06fb8242968a83946f3e132,
-    type: 2}
---- !u!114 &114616593868650326
+  _collectable: {fileID: 0}
+--- !u!114 &114864169899205658
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -247,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
-  MaxSpeed: 10
+  MaxSpeed: 3
   _deathParticleSystem: {fileID: 198750260506887670, guid: 56a0b65b1c5c4d34780afb9f76f2ab63,
     type: 2}
   _shakeAmount: 0.25
@@ -255,8 +254,8 @@ MonoBehaviour:
   _inPlayArea:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 40, y: 40, z: 0}
-  boostDistance: 0
-  boostSpeed: 0
+  boostDistance: 5
+  boostSpeed: 10
 --- !u!212 &212014262990449446
 SpriteRenderer:
   m_ObjectHideFlags: 1

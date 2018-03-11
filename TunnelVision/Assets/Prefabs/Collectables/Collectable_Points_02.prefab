@@ -21,11 +21,10 @@ GameObject:
   - component: {fileID: 4531885890328278}
   - component: {fileID: 212456541069050004}
   - component: {fileID: 50236871813586732}
-  - component: {fileID: 114901079587273828}
   - component: {fileID: 58036681579754414}
-  - component: {fileID: 114628810121526118}
+  - component: {fileID: 114839151305680838}
   m_Layer: 0
-  m_Name: Collectable_Points
+  m_Name: Collectable_Points_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +78,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.7
---- !u!114 &114628810121526118
+--- !u!114 &114839151305680838
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -90,24 +89,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1592b90ad80d7cf4ba55bf4434d29a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _system: {fileID: 198231790742280296, guid: 1b4a2efb5a8c5d649b939ba580792042, type: 2}
+  _system: {fileID: 0}
   _lifeTime: 5
   _fadeTime: 1
-  m_pointValue: 1
---- !u!114 &114901079587273828
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1351185228522906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71f10a8b6f9068b4da3e3c22adf83d2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _system: {fileID: 198231790742280296, guid: 1b4a2efb5a8c5d649b939ba580792042, type: 2}
-  _lifeTime: 10
-  _fadeTime: 2
+  m_pointValue: 5
 --- !u!212 &212456541069050004
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -143,7 +128,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ded11bdc7bfb09c40bdcfa4d1662a75b, type: 3}
-  m_Color: {r: 0.51125765, g: 1, b: 0.41911763, a: 1}
+  m_Color: {r: 0.29411763, g: 0.8247464, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

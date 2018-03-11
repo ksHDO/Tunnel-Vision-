@@ -243,6 +243,7 @@ MonoBehaviour:
   _highScorePlayerPref: HighScore
   _eventKey: UPDATE_MULTIPLAYER_SCORE
   _eventAttribute: SCORE
+  MultiplayerManager: {fileID: 0}
   _onAddScore:
     m_PersistentCalls:
       m_Calls:
@@ -1192,7 +1193,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &753100172
 MonoBehaviour:
@@ -1502,8 +1503,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyList:
   - {fileID: 114549542126219796, guid: 703039b9b332e3a4b98aef2d96ee45ea, type: 2}
-  - {fileID: 114616593868650326, guid: e56723784e77ad546a38781fc8605765, type: 2}
-  - {fileID: 114009522327343568, guid: 7e4571a21e0469d49bf771378868f0f4, type: 2}
+  - {fileID: 114864169899205658, guid: e56723784e77ad546a38781fc8605765, type: 2}
+  - {fileID: 114017892821081752, guid: 7e4571a21e0469d49bf771378868f0f4, type: 2}
   - {fileID: 114443168563005694, guid: c718b073858dece4faa34015f97bbaaa, type: 2}
   - {fileID: 114443168563005694, guid: 003ed83ae1f581644b15893c6801665c, type: 2}
   - {fileID: 114401598691207176, guid: f0c1b794d0b560745b52e09b2ff79905, type: 2}

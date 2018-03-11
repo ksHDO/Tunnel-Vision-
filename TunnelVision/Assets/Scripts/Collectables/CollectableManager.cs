@@ -20,14 +20,16 @@ public class CollectableManager : MonoBehaviour {
 
     // Internal Information
     private Collectable[] m_collectables;
-    private bool[] m_spawnPositionsOpen;
+    //private bool[] m_spawnPositionsOpen;
     private float[] m_collectableThresholds;
     private float m_spawnDelayCurrent;
     private float m_timer;
     private int m_collectableCount = 0;
+    private float totalThresholdCount = 0;
+    private int index = 0;
 
     // Use this for initialization
-    void Awake () {
+    void Start () {
         // Verify the weights and collectable prefabs match up
 		if(m_collectablePrefabList.Length != m_collectableWeights.Length)
         {
@@ -36,21 +38,21 @@ public class CollectableManager : MonoBehaviour {
 
         // Create an array o thresholds
         m_collectableThresholds = new float[m_collectableWeights.Length];
-        float total = m_collectableWeights[0];
+        totalThresholdCount = m_collectableWeights[0];
         for (int x = 1; x < m_collectableWeights.Length; ++x)
         {
-            total += m_collectableWeights[x];
+            totalThresholdCount += m_collectableWeights[x];
         }
         
         // Fill out thresholds
-        m_collectableThresholds[0] = m_collectableWeights[0] / total;
+        m_collectableThresholds[0] = m_collectableWeights[0] / totalThresholdCount;
         for (int x = 1; x < m_collectableThresholds.Length; ++x)
         {
-            m_collectableThresholds[x] = m_collectableThresholds[x - 1] + (m_collectableThresholds[x] / total);
+            m_collectableThresholds[x] = m_collectableThresholds[x - 1] + (m_collectableWeights[x] / totalThresholdCount);
         }
 
         m_collectables = new Collectable[m_maxCollectables];
-        m_spawnPositionsOpen = new bool[m_maxCollectables];
+        //m_spawnPositionsOpen = new bool[m_maxCollectables];
 
         for (int j = 0; j < m_maxCollectables; ++j)
         {
@@ -71,6 +73,7 @@ public class CollectableManager : MonoBehaviour {
         {
             if (roll <= m_collectableThresholds[x])
             {
+                print("Prefab selected:" + m_collectablePrefabList[x].gameObject.name);
                 return m_collectablePrefabList[x].gameObject;
             }
         }
@@ -83,7 +86,7 @@ public class CollectableManager : MonoBehaviour {
         --m_collectableCount;
         m_collectables[idx].transform.position = Vector3.zero;
         m_collectables[idx].gameObject.SetActive(false);
-        m_spawnPositionsOpen[idx] = true;
+       // m_spawnPositionsOpen[idx] = true;
     }
 
 
@@ -107,15 +110,21 @@ public class CollectableManager : MonoBehaviour {
         if (m_collectableCount < m_maxFieldCollectables)
         {
             ++m_collectableCount;
-
-            int firstSlot = 0;
-            for (int i = 0; i < m_maxCollectables; ++i)
+            ++index;
+            if(index == m_maxCollectables)
             {
-                if (m_spawnPositionsOpen[i]) { firstSlot = i; break; }
+                index = 0;
             }
-            //something here
-            m_spawnPositionsOpen[firstSlot] = false;
-            Collectable toAdd = m_collectables[firstSlot];
+
+            //int firstSlot = 0;
+            //for (int i = 0; i < m_maxCollectables; ++i)
+            //{
+            //    if (m_spawnPositionsOpen[i]) { firstSlot = i; break; }
+            //}
+            ////something here
+            //m_spawnPositionsOpen[firstSlot] = false;
+            //Collectable toAdd = m_collectables[firstSlot];
+            Collectable toAdd = m_collectables[index];
             toAdd.gameObject.SetActive(true);
             toAdd.gameObject.transform.position = GetRandomSpawnPos();
         }

@@ -62,8 +62,8 @@ public class Turret : MonoBehaviour
             // Set information
             _bullets[i].SetActive(false);
             _particles[i].gameObject.SetActive(false);
-            _bullets[i].transform.SetParent(_bulletContainer.transform);
-            _particles[i].transform.SetParent(_particleContainer.transform);
+            _bullets[i].transform.SetParent(GlobalInfo.BulletContainer.transform);
+            _particles[i].transform.SetParent(GlobalInfo.ParticleContainer.transform);
 	    }
 	    _bulletIndex = -1;
 	}

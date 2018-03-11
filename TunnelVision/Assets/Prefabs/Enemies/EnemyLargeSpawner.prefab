@@ -223,7 +223,7 @@ MonoBehaviour:
   _radius: 1
   _maxRotationSpeed: 3
   _minRotationSpeed: 300
-  _collectable: {fileID: 114628810121526118, guid: 1c42d39ab06fb8242968a83946f3e132,
+  _collectable: {fileID: 114289315291132722, guid: 429076bf750d100409972aa8f6d0c920,
     type: 2}
 --- !u!114 &114345870082780806
 MonoBehaviour:

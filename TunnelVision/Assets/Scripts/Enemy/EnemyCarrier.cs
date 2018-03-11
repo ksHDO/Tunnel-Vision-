@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyCarrier : EnemyBehavior
 {
 
-    [SerializeField] private EnemyBehavior m_smallShipPrefab;
+    [SerializeField] private EnemyTypes m_smallShip;
     [SerializeField] private float m_spawnWaveTime = 2.0f;
     [SerializeField] private float m_spawnWavePerShipInterval = .2f;
     [SerializeField] private int m_spawnWaveCount = 4;
@@ -34,17 +34,9 @@ public class EnemyCarrier : EnemyBehavior
 
     private void Spawn()
     {
-        GameObject enemy = Instantiate(m_smallShipPrefab.gameObject);
-
-        EnemyBehavior behavior = enemy.GetComponent<EnemyBehavior>();
-        behavior.Target = Target;
-
-        EnemyInfo enemyInfo = enemy.GetComponent<EnemyInfo>();
-        enemyInfo.PlayerScore = m_eInfo.PlayerScore;
-
         Vector2 pos = Random.insideUnitCircle.normalized * .02f + (Vector2)transform.position;
-        enemy.transform.position = pos;
-        enemy.GetComponent<Rigidbody2D>().AddForce((enemy.transform.position - transform.position).normalized * m_spawnForce, ForceMode2D.Impulse);
+        EnemyGenerator.Instance.GenerateEnemy(m_smallShip.ToInt(), pos);
+        // enemy.GetComponent<Rigidbody2D>().AddForce((enemy.transform.position - transform.position).normalized * m_spawnForce, ForceMode2D.Impulse);
     }
 
     private void DoTimerCycle()
