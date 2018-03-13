@@ -78,6 +78,7 @@ public class UiMenuMultiplayer : MonoBehaviour {
     {
         if (m_gameSparksManager.RTSession.PeerId.Value == 1)
         {
+            ShowAllConnected();
             if (m_startButton)
                 m_startButton.gameObject.SetActive(true);
         }
