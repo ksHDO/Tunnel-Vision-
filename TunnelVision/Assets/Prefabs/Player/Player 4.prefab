@@ -376,11 +376,17 @@ MonoBehaviour:
   _zoomMin: 7
   _timeToZoomOut: 1
   _zoomInSpeed: 0.05
-  _zoomOutSpeed: 0.01
+  _zoomOutSpeed: 0.03
   _smoothTime: 0.5
   _maxSpeed: 2
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   _isPlayer: 1
-  _updateRate: 0.3
+  UpdateRate: 0.3
+  PeerID: 0
 --- !u!114 &114199916229204318
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -480,6 +486,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
+    m_TypeName: FloatEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _onPlayerHpModifiedNewHealth:
+    m_PersistentCalls:
+      m_Calls: []
     m_TypeName: FloatEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   _onPlayerDeath:
     m_PersistentCalls:

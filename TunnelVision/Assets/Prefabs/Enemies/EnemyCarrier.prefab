@@ -213,11 +213,11 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 40, y: 40, z: 0}
   m_smallShip: 10
-  m_spawnWaveTime: 2
+  m_spawnWaveTime: 7
   m_spawnWavePerShipInterval: 0.2
-  m_spawnWaveCount: 4
+  m_spawnWaveCount: 3
   m_spawnStartTime: 7
-  m_spawnForce: 20
+  m_spawnForce: 3
 --- !u!114 &114651899931523858
 MonoBehaviour:
   m_ObjectHideFlags: 1
