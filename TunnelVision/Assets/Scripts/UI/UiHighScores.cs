@@ -26,6 +26,8 @@ public class UiHighScores : MonoBehaviour
 	void Start ()
     {
         showSolo = true;
+        m_modeSwitchText.text = CoopText;
+        m_modeTitle.text = SoloText;
         SetLeaderboard(soloShortCode);
     }
 
