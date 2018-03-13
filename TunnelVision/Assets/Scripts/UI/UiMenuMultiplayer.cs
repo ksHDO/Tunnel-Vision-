@@ -137,11 +137,12 @@ public class UiMenuMultiplayer : MonoBehaviour {
         m_switchScene.Switch(multiplayerScene);
     }
 
-    public void Disconnect()
+    public void Disconnect(string returnScene)
     {
         GameSparksRTUnity session = m_gameSparksManager.RTSession;
         if (session != null)
             session.Disconnect();
+        m_switchScene.Switch(returnScene);
     }
 
 }

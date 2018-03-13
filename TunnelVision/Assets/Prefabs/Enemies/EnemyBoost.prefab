@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
-  MaxSpeed: 3
+  MaxSpeed: 2
   _deathParticleSystem: {fileID: 198750260506887670, guid: 56a0b65b1c5c4d34780afb9f76f2ab63,
     type: 2}
   _shakeAmount: 0.25
@@ -254,8 +254,8 @@ MonoBehaviour:
   _inPlayArea:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 40, y: 40, z: 0}
-  boostDistance: 5
-  boostSpeed: 10
+  boostDistance: 3
+  boostSpeed: 15
 --- !u!212 &212014262990449446
 SpriteRenderer:
   m_ObjectHideFlags: 1
