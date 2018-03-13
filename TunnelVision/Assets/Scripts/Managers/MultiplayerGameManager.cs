@@ -267,4 +267,9 @@ public class MultiplayerGameManager : MonoBehaviour {
     private void OnPlayerDisconnected(int peer)
     {
     }
+
+    public void Disconnect()
+    {
+        m_gameSparksManager.RTSession.Disconnect();
+    }
 }
